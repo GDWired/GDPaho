@@ -1,0 +1,14 @@
+#ifndef UTILS
+#define UTILS
+
+#define PAHO_ERR_NOTINIT -1000
+
+enum PahoLogLevel {
+	PAHO_LOG_INFO,
+	PAHO_LOG_NOTICE,
+	PAHO_LOG_WARNING,
+	PAHO_LOG_ERR,
+	PAHO_LOG_DEBUG
+};
+
+#endif //UTILS

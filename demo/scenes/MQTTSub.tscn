@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/MQTTSub.gd" type="Script" id=2]
+[ext_resource path="res://addons/GDCharts/script.gd" type="Script" id=3]
+
+[node name="MQTTSub" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -20.0
+margin_bottom = -50.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+client_id = "MQTTSub"
+
+[node name="GDCharts" type="ReferenceRect" parent="."]
+margin_right = 1004.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 0, 450 )
+script = ExtResource( 3 )
+
+[node name="Buttons" type="HBoxContainer" parent="."]
+margin_top = 454.0
+margin_right = 1004.0
+margin_bottom = 494.0
+
+[node name="Subscribe" type="CheckButton" parent="Buttons"]
+margin_right = 200.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 200, 40 )
+text = "Subscribe"
+
+[node name="RefreshLabel" type="Label" parent="Buttons"]
+margin_left = 204.0
+margin_top = 13.0
+margin_right = 329.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 125, 0 )
+text = "Refresh every"
+
+[node name="RefreshTime" type="SpinBox" parent="Buttons"]
+margin_left = 333.0
+margin_right = 408.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 75, 0 )
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 5.0
+suffix = "s"
+
+[connection signal="connected" from="." to="." method="_on_MQTTSub_connected"]
+[connection signal="received" from="." to="." method="_on_MQTTClient_received"]
+[connection signal="toggled" from="Buttons/Subscribe" to="." method="_on_Subscribe_toggled"]
+[connection signal="value_changed" from="Buttons/RefreshTime" to="." method="_on_RefreshFrequency_value_changed"]
