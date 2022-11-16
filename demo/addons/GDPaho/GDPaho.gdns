@@ -3,7 +3,7 @@
 [sub_resource type="GDNativeLibrary" id=1]
 entry/OSX.64 = ""
 entry/Windows.64 = "res://addons/GDPaho/windows/libgdpaho.dll"
-entry/X11.64 = ""
+entry/X11.64 = "res://addons/GDPaho/linux/libgdpaho.so"
 dependency/OSX.64 = [  ]
 dependency/Windows.64 = [  ]
 dependency/X11.64 = [  ]

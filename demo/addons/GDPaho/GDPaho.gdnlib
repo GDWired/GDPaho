@@ -8,7 +8,9 @@ reloadable=true
 [entry]
 
 Windows.64="res://addons/GDPaho/windows/libgdpaho.dll"
+X11.64="res://addons/GDPaho/linux/libgdpaho.so"
 
 [dependencies]
 
-Windows.64=[ "res://addons/GDPaho/windows/msvcr120.dll", "res://addons/GDPaho/windows/paho-mqtt3as.dll" ]
+Windows.64=[ "res://addons/GDPaho/windows/libcrypto-1_1-x64.dll", "res://addons/GDPaho/windows/libssl-1_1-x64.dll", "res://addons/GDPaho/windows/paho-mqtt3as.dll" ]
+X11.64=[  ]

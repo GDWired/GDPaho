@@ -1,5 +1,5 @@
 extends Node
-class_name PahoClient, "res://addons/GDPaho/icon.png"
+class_name PahoClient, "icon.png"
 
 
 signal connected(reason_code)
@@ -19,7 +19,7 @@ export var broker_port: int = 1883
 export var broker_keep_alive: int = 60
 
 
-onready var _mqtt_client = preload("res://addons/GDPaho/GDPaho.gdns").new()
+onready var _mqtt_client = preload("GDPaho.gdns").new()
 
 
 func _ready():
