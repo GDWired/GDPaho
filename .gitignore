@@ -50,5 +50,7 @@ data_*/
 
 # macOS
 .DS_Store
+
+# Specific
 lib/libcrypto64MD.lib
 lib/libssl64MD.lib
