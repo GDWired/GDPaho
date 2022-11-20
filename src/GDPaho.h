@@ -29,6 +29,11 @@ namespace godot {
 			 */
 			PahoWrapper* m_wrapper;
 
+			/**
+			 * If true, the connection parameter has been set at least once
+			 */
+			bool m_connection_initialized_once;
+
 		// Private methods
 		private:
 

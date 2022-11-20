@@ -56,16 +56,6 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 	protected:
 
 		/**
-		 * Retry count
-		 */
-		int m_retry_count;
-
-		/**
-		 * Retry attemps
-		 */
-		int m_retry_attempts;
-
-		/**
 		 * Reference to the main class of the plugin
 		 */
 		GDPaho& m_gd_paho;
@@ -85,13 +75,10 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 		/**
 		 * Constructor
 		 * @param p_client the client
-		 * @param p_retry_attempts retry attemps
 		 * @param p_connecton_options options to use if we need to reconnect
 		 */
-		Callback(GDPaho& p_gd_paho, mqtt::async_client& p_client, const int p_retry_attempts, mqtt::connect_options& p_connecton_options) : 
+		Callback(GDPaho& p_gd_paho, mqtt::async_client& p_client, mqtt::connect_options& p_connecton_options) : 
 			m_gd_paho(p_gd_paho),
-			m_retry_count(0),
-			m_retry_attempts(p_retry_attempts),
 			m_client(p_client), 
 			m_connecton_options(p_connecton_options) {}
 
@@ -215,7 +202,7 @@ class PahoWrapper : public mqtt::async_client {
 			int connect_to_broker(const bool p_clean_session = true, const int p_keep_alive = 60) {
 				m_connection_options.set_clean_session(p_clean_session);
 				m_connection_options.set_keep_alive_interval(p_keep_alive);
-				m_callback = new Callback(m_gd_paho, *this, 5, m_connection_options);
+				m_callback = new Callback(m_gd_paho, *this, m_connection_options);
 
 				set_callback(*m_callback);
 

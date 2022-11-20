@@ -6,7 +6,8 @@
 using namespace godot;
 
 GDPaho::GDPaho() : 
-	m_wrapper(nullptr) {
+	m_wrapper(nullptr),
+	m_connection_initialized_once(false) {
 }
 
 GDPaho::~GDPaho() {
@@ -94,43 +95,64 @@ bool GDPaho::is_connected_to_broker() {
 
 int GDPaho::connect(const bool p_clean_session, const int p_keep_alive) {
 	if (!m_wrapper) {
-		return PAHO_ERR_NOTINIT;
+		return PAHO_ERR_NOT_INIT;
 	}
+	if (m_wrapper->is_connected()) {
+		return PAHO_ERR_ALREADY_CONNECTED;
+	}
+	m_connection_initialized_once = true;
 	return m_wrapper->connect_to_broker(p_clean_session, p_keep_alive);
 }
 
 int GDPaho::reconnect() {
 	if (!m_wrapper) {
-		return PAHO_ERR_NOTINIT;
+		return PAHO_ERR_NOT_INIT;
+	}
+	if (m_wrapper->is_connected()) {
+		return PAHO_ERR_ALREADY_CONNECTED;
+	}
+	if (!m_connection_initialized_once) {
+		return PAHO_ERR_NOT_INITIALIZED_ONCE;
 	}
 	return m_wrapper->reconnect_to_broker();
 }
 
 int GDPaho::disconnect() {
 	if (!m_wrapper) {
-		return PAHO_ERR_NOTINIT;
+		return PAHO_ERR_NOT_INIT;
+	}
+	if (!m_wrapper->is_connected()) {
+		return PAHO_ERR_NOT_CONNECTED;
 	}
 	return m_wrapper->disconnect_to_broker();
 }	
 
 int GDPaho::publish(const String p_topic, const String p_payload, const int p_qos, const bool p_retain) {
-	if (!m_wrapper || !m_wrapper->is_connected()) {
-		return PAHO_ERR_NOTINIT;
+	if (!m_wrapper) {
+		return PAHO_ERR_NOT_INIT;
 	}
-	
+	if (!m_wrapper->is_connected()) {
+		return PAHO_ERR_NOT_CONNECTED;
+	}
 	return m_wrapper->publish_to(p_topic.utf8().get_data(), p_payload.utf8().get_data(), p_qos, p_retain);
 }	
 
 int GDPaho::subscribe(const String p_sub, const int p_qos) {
-	if (!m_wrapper || !m_wrapper->is_connected()) {
-		return PAHO_ERR_NOTINIT;
+	if (!m_wrapper) {
+		return PAHO_ERR_NOT_INIT;
+	}
+	if (!m_wrapper->is_connected()) {
+		return PAHO_ERR_NOT_CONNECTED;
 	}
 	return m_wrapper->subscribe_to(p_sub.utf8().get_data(), p_qos);
 }	
 
 int GDPaho::unsubscribe(const String p_sub) {
-	if (!m_wrapper || !m_wrapper->is_connected()) {
-		return PAHO_ERR_NOTINIT;
+	if (!m_wrapper) {
+		return PAHO_ERR_NOT_INIT;
+	}
+	if (!m_wrapper->is_connected()) {
+		return PAHO_ERR_NOT_CONNECTED;
 	}
 	return m_wrapper->unsubscribe_to(p_sub.utf8().get_data());
 }
