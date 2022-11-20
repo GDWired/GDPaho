@@ -31,7 +31,10 @@ func _ready():
 	_mqtt_client.connect("unsubscribed", self, "_on_MQTTClient_unsubscribed")
 	_mqtt_client.connect("log", self, "_on_MQTTClient_log")
 	_mqtt_client.connect("error", self, "_on_MQTTClient_error")
-	
+	broker_connect()
+
+
+func broker_connect() -> void:
 	# Init the client
 	if not _mqtt_client.initialise(client_id, broker_address, broker_port):
 		_mqtt_client.broker_connect(clean_session, broker_keep_alive)
@@ -66,7 +69,7 @@ func _on_MQTTClient_disconnected() -> void:
 
 
 func _on_MQTTClient_published(message_id: int) -> void:
-	 emit_signal("published", message_id)
+	emit_signal("published", message_id)
 
 
 func _on_MQTTClient_received(topic: String, payload: String) -> void:
@@ -74,11 +77,11 @@ func _on_MQTTClient_received(topic: String, payload: String) -> void:
 
 
 func _on_MQTTClient_subscribed(message_id: int, topic: String) -> void:
-	 emit_signal("subscribed", message_id, topic)
+	emit_signal("subscribed", message_id, topic)
 
 
 func _on_MQTTClient_unsubscribed(message_id: int, topic: String) -> void:
-	 emit_signal("unsubscribed", message_id)
+	emit_signal("unsubscribed", message_id, topic)
 
 
 func _on_MQTTClient_log(level: int, message: String) -> void:
@@ -86,5 +89,5 @@ func _on_MQTTClient_log(level: int, message: String) -> void:
 
 
 func _on_MQTTClient_error(message: String, reason_code: int) -> void:
-	 emit_signal("error_received", message, reason_code)
+	emit_signal("error_received", message, reason_code)
 

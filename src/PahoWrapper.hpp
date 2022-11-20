@@ -10,7 +10,7 @@
  * Callbacks for the success or failures of requested actions.
  * This could be used to initiate further action
  */
-class ActionListener : public virtual mqtt::iaction_listener {
+class SubscribeActionListener : public virtual mqtt::iaction_listener {
 	protected:
 
 		/**
@@ -24,7 +24,7 @@ class ActionListener : public virtual mqtt::iaction_listener {
 		 * Constructor
 		 * @param p_name the name of the callback
 		 */
-		ActionListener(GDPaho& p_gd_paho) : 
+		SubscribeActionListener(GDPaho& p_gd_paho) : 
 			m_gd_paho(p_gd_paho) {}
 
 	protected:
@@ -34,7 +34,7 @@ class ActionListener : public virtual mqtt::iaction_listener {
 		 * @param p_token the token
 		 */
 		void on_failure(const mqtt::token& p_token) override {
-			m_gd_paho.emit_on_error("Connection attempt failed", p_token.get_reason_code());
+			m_gd_paho.emit_on_error("Subscribe failed", p_token.get_reason_code());
 		}
 
 		/**
@@ -96,32 +96,11 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 			m_connecton_options(p_connecton_options) {}
 
 		/**
-		 * Reconnecting to the broker by calling connect() again. 
-		 * 
-		 * This is a possibility for an application that keeps
-		 * a copy of it's original connect_options, or if the app wants to
-		 * reconnect with different options.
-		 * Another way this can be done manually, if using the same options, is
-		 * to just call the async_client::reconnect() method.
-		 */
-		void reconnect() {
-			std::this_thread::sleep_for(std::chrono::milliseconds(2500));
-			try {
-				m_client.connect(m_connecton_options, nullptr, *this);
-			} catch (const mqtt::exception& p_exception) {
-				m_gd_paho.emit_on_error(p_exception.what(), p_exception.get_reason_code());
-			}
-		}
-
-		/**
 		 * Re-connection failure
 		 * @param p_token the token
 		 */
 		void on_failure(const mqtt::token& p_token) override {
 			m_gd_paho.emit_on_error("Connection attempt failed", p_token.get_reason_code());
-			if (++m_retry_count < m_retry_attempts) {
-				reconnect();
-			}
 		}
 
 		/**
@@ -130,7 +109,7 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 		 * @param p_token the token
 		 */
 		void on_success(const mqtt::token& p_token) override {
-			// Nothing ...
+			m_gd_paho.emit_on_connect(p_token.get_reason_code());
 		}
 
 		/**
@@ -139,18 +118,19 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 		 */		
 		void connected(const std::string& p_cause) override {
 			m_gd_paho.emit_on_log(PahoLogLevel::PAHO_LOG_INFO, p_cause);
-			m_gd_paho.emit_on_connect(mqtt::ReasonCode::SUCCESS);
 		}
 
 		/**
 		 * Callback for when the connection is lost.
-		 * This will initiate the attempt to manually reconnect.
 		 * @param p_cause the cause
 		 */	
 		void connection_lost(const std::string& p_cause) override {
-			m_gd_paho.emit_on_log(PahoLogLevel::PAHO_LOG_ERR, p_cause);
+			std::string l_log = p_cause;
+			if (l_log == "") {
+				l_log = "connection lost";
+			}
+			m_gd_paho.emit_on_log(PahoLogLevel::PAHO_LOG_INFO, l_log);
 			m_gd_paho.emit_on_disconnect();
-			reconnect();
 		}
 
 		/**
@@ -190,7 +170,7 @@ class PahoWrapper : public mqtt::async_client {
 			/**
 			 * An action listener to display the result of actions.
 			 */
-			ActionListener m_subscription_listener;
+			SubscribeActionListener m_subscription_listener;
 
 			/**
 			 * Connection options.

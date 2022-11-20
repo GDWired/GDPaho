@@ -1,8 +1,15 @@
 # GDPaho
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot.
 
-Works only on Windows (Linux and macOS are WIP) there is only few functions exposed 
+Works only on Windows and Linux(macOS is WIP) there is only few functions exposed.
 
+Windows
+ - OpenSSL must be installed: https://slproweb.com/products/Win32OpenSSL.html
+ - Copy past <Installation dir>\OpenSSL-Win64\lib\VC\static libcrypto64MD.lib and libssl64MD.lib to lib
+ - Run scons target=debug (or release)
+
+Linux: 
+ - WIP
 
 ``` gdscript
 # Initialize the client

@@ -36,6 +36,8 @@ func _on_MQTTClient_received(_topic: String, payload: String) -> void:
 func _on_Subscribe_toggled(button_pressed: bool) -> void:
 	if button_pressed:
 		var _rc = subscribe("SIN", 1)
+		if not is_connected_to_broker():
+			broker_connect()
 	else:
 		var _rc = unsubscribe("SIN")
 
@@ -45,6 +47,16 @@ func _on_RefreshFrequency_value_changed(value: float) -> void:
 
 
 func _on_MQTTSub_connected(_reason_code: int) -> void:
-	# Init values from UI
-	if _subscribe_button.pressed:
-		var _rc = subscribe("SIN", 0)
+	print("CON: " + str(_reason_code))
+func _on_MQTTSub_unsubscribed(message_id, topic) -> void:
+	print("UNS: " + str(message_id) + ": " + topic)
+func _on_MQTTSub_subscribed(message_id, topic) -> void:
+	print("SUB: " + str(message_id) + ": " + topic)
+func _on_MQTTSub_log_received(level, message) -> void:
+	print("LOG: " + str(level) + ": " + message)
+func _on_MQTTSub_error_received(message, reason_code) -> void:
+	print("ERR: " + str(reason_code) + ": " + message)
+func _on_MQTTSub_published(message_id) -> void:
+	print("PUB: " + str(message_id))
+func _on_MQTTSub_disconnected() -> void:
+	print("DIS")

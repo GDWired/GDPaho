@@ -32,5 +32,13 @@ min_value = 1.0
 value = 10.0
 suffix = "hz"
 
+[connection signal="connected" from="." to="." method="_on_MQTTPub_connected"]
+[connection signal="disconnected" from="." to="." method="_on_MQTTPub_disconnected"]
+[connection signal="error_received" from="." to="." method="_on_MQTTPub_error_received"]
+[connection signal="log_received" from="." to="." method="_on_MQTTPub_log_received"]
+[connection signal="published" from="." to="." method="_on_MQTTPub_published"]
+[connection signal="received" from="." to="." method="_on_MQTTPub_received"]
+[connection signal="subscribed" from="." to="." method="_on_MQTTPub_subscribed"]
+[connection signal="unsubscribed" from="." to="." method="_on_MQTTPub_unsubscribed"]
 [connection signal="toggled" from="Publish" to="." method="_on_Publish_toggled"]
 [connection signal="value_changed" from="PublishFrequency" to="." method="_on_PublishFrequency_value_changed"]

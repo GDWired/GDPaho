@@ -165,7 +165,7 @@ void GDPaho::emit_on_subscribe(const int p_mid, const std::string& p_topic) {
 }
 
 void GDPaho::emit_on_unsubscribe(const int p_mid, const std::string& p_topic) {
-	emit_signal("unsubscribed", p_mid);
+	emit_signal("unsubscribed", p_mid, String(p_topic.c_str()));
 }
 
 void GDPaho::emit_on_log(const int p_level, const std::string& p_message) {

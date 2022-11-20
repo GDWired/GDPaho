@@ -27,8 +27,28 @@ func _process(delta: float) -> void:
 
 func _on_Publish_toggled(button_pressed: bool) -> void:
 	_loop = button_pressed
+	if not is_connected_to_broker():
+		broker_connect()
 
 
 func _on_PublishFrequency_value_changed(value: float) -> void:
 	_publish_frequency = value
 
+
+
+func _on_MQTTPub_unsubscribed(message_id, topic) -> void:
+	print("UNS: " + str(message_id) + ": " + topic)
+func _on_MQTTPub_subscribed(message_id, topic) -> void:
+	print("SUB: " + str(message_id) + ": " + topic)
+func _on_MQTTPub_log_received(level, message) -> void:
+	print("LOG: " + str(level) + ": " + message)
+func _on_MQTTPub_error_received(message, reason_code) -> void:
+	print("ERR: " + str(reason_code) + ": " + message)
+func _on_MQTTPub_published(message_id) -> void:
+	print("PUB: " + str(message_id))
+func _on_MQTTPub_connected(reason_code) -> void:
+	print("CON: " + str(reason_code))
+func _on_MQTTPub_received(topic, payload) -> void:
+	print("REC: " + topic + ": " + payload)
+func _on_MQTTPub_disconnected() -> void:
+	print("DIS")
