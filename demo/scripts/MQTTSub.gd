@@ -27,6 +27,13 @@ func _process(delta: float) -> void:
 		_time = 0.0
 
 
+func check_subscribe(button_pressed: bool) -> void:
+	if button_pressed:
+		var _rc = subscribe("SIN", 1)
+	else:
+		var _rc = unsubscribe("SIN")
+
+
 func _on_MQTTClient_received(_topic: String, payload: String) -> void:
 	# MQTT data received
 	var result = JSON.parse(payload).result
@@ -34,13 +41,13 @@ func _on_MQTTClient_received(_topic: String, payload: String) -> void:
 
 
 func _on_Subscribe_toggled(button_pressed: bool) -> void:
-	if button_pressed:
-		var _rcs = subscribe("SIN", 1)
-		if not is_connected_to_broker():
-			var _rcr = broker_reconnect()
-	else:
-		var _rcu = unsubscribe("SIN")
+	check_subscribe(button_pressed)
 
 
 func _on_RefreshFrequency_value_changed(value: float) -> void:
 	_refresh_time = value
+
+
+func _on_MQTTSub_connected(_reason_code: int):
+	check_subscribe(_subscribe_button.pressed)
+	

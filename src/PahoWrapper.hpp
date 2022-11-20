@@ -197,11 +197,13 @@ class PahoWrapper : public mqtt::async_client {
 			 * Connect to the broker
 			 * @param p_clean_session set to true to instruct the broker to clean all messages and subscriptions on disconnect, false to instruct it to keep them
 			 * @param p_keep_alive keep alive time
+			 * @param p_automatic_reconnect if true then automatic reconnect
 			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
 			 */
-			int connect_to_broker(const bool p_clean_session = true, const int p_keep_alive = 60) {
+			int connect_to_broker(const bool p_clean_session = true, const int p_keep_alive = 60, const bool p_automatic_reconnect = true) {
 				m_connection_options.set_clean_session(p_clean_session);
 				m_connection_options.set_keep_alive_interval(p_keep_alive);
+				m_connection_options.set_automatic_reconnect(p_automatic_reconnect);
 				m_callback = new Callback(m_gd_paho, *this, m_connection_options);
 
 				set_callback(*m_callback);
