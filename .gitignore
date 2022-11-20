@@ -54,3 +54,5 @@ data_*/
 # Specific
 lib/libcrypto64MD.lib
 lib/libssl64MD.lib
+demo/addons/GDPaho/windows/libgdpaho.dll
+demo/addons/GDPaho/windows/libgdpaho.lib

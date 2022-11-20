@@ -49,13 +49,6 @@ step = 0.1
 value = 5.0
 suffix = "s"
 
-[connection signal="connected" from="." to="." method="_on_MQTTSub_connected"]
-[connection signal="disconnected" from="." to="." method="_on_MQTTSub_disconnected"]
-[connection signal="error_received" from="." to="." method="_on_MQTTSub_error_received"]
-[connection signal="log_received" from="." to="." method="_on_MQTTSub_log_received"]
-[connection signal="published" from="." to="." method="_on_MQTTSub_published"]
 [connection signal="received" from="." to="." method="_on_MQTTClient_received"]
-[connection signal="subscribed" from="." to="." method="_on_MQTTSub_subscribed"]
-[connection signal="unsubscribed" from="." to="." method="_on_MQTTSub_unsubscribed"]
 [connection signal="toggled" from="Buttons/Subscribe" to="." method="_on_Subscribe_toggled"]
 [connection signal="value_changed" from="Buttons/RefreshTime" to="." method="_on_RefreshFrequency_value_changed"]
