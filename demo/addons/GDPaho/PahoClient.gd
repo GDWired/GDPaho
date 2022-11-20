@@ -31,13 +31,25 @@ func _ready():
 	_mqtt_client.connect("unsubscribed", self, "_on_MQTTClient_unsubscribed")
 	_mqtt_client.connect("log", self, "_on_MQTTClient_log")
 	_mqtt_client.connect("error", self, "_on_MQTTClient_error")
-	broker_connect()
+	var rc_initialise: int = _mqtt_client.initialise(client_id, broker_address, broker_port)
+	if not rc_initialise:
+		var rc_connect: int = _mqtt_client.broker_connect(clean_session, broker_keep_alive)
+		if rc_connect:
+			printerr("[" + client_id + "] error during connect, " + _mqtt_client.reason_code_string(rc_connect))
+	else:
+		printerr("[" + client_id + "] error during initialise, " + _mqtt_client.reason_code_string(rc_initialise))
 
 
-func broker_connect() -> void:
-	# Init the client
-	if not _mqtt_client.initialise(client_id, broker_address, broker_port):
-		_mqtt_client.broker_connect(clean_session, broker_keep_alive)
+func broker_connect(new_clean_session: bool = false, new_broker_keep_alive: int = 60) -> int:
+	var rc_connect: int = _mqtt_client.broker_connect(new_clean_session, new_broker_keep_alive)
+	if not rc_connect:
+		clean_session = new_clean_session
+		broker_keep_alive = new_broker_keep_alive
+	return rc_connect
+
+
+func broker_reconnect() -> int:
+	return _mqtt_client.broker_reconnect()
 
 
 func is_connected_to_broker() -> int:

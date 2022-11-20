@@ -35,11 +35,11 @@ func _on_MQTTClient_received(_topic: String, payload: String) -> void:
 
 func _on_Subscribe_toggled(button_pressed: bool) -> void:
 	if button_pressed:
-		var _rc = subscribe("SIN", 1)
+		var _rcs = subscribe("SIN", 1)
 		if not is_connected_to_broker():
-			broker_connect()
+			var _rcr = broker_reconnect()
 	else:
-		var _rc = unsubscribe("SIN")
+		var _rcu = unsubscribe("SIN")
 
 
 func _on_RefreshFrequency_value_changed(value: float) -> void:

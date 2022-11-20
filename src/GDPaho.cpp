@@ -33,6 +33,7 @@ void GDPaho::_register_methods() {
 	register_method("publish", &GDPaho::publish);
 	register_method("subscribe", &GDPaho::subscribe);
 	register_method("unsubscribe", &GDPaho::unsubscribe);
+	register_method("reason_code_string", &GDPaho::reason_code_string);
 
 	// Signals
 	register_signal<GDPaho>("connected", 
@@ -112,7 +113,7 @@ int GDPaho::reconnect() {
 		return PAHO_ERR_ALREADY_CONNECTED;
 	}
 	if (!m_connection_initialized_once) {
-		return PAHO_ERR_NOT_INITIALIZED_ONCE;
+		return PAHO_ERR_CONNECTION_NOT_INITIALIZED_ONCE;
 	}
 	return m_wrapper->reconnect_to_broker();
 }
@@ -155,6 +156,19 @@ int GDPaho::unsubscribe(const String p_sub) {
 		return PAHO_ERR_NOT_CONNECTED;
 	}
 	return m_wrapper->unsubscribe_to(p_sub.utf8().get_data());
+}
+
+String GDPaho::reason_code_string(const int p_rc) {
+	if (p_rc == PAHO_ERR_NOT_INIT) {
+		return "MQTT client is not initialized, initialise() must be call first";
+	} else if (p_rc == PAHO_ERR_CONNECTION_NOT_INITIALIZED_ONCE) {
+		return "MQTT client is not completely initialized, connect() must be called at least once";
+	} else if (p_rc == PAHO_ERR_ALREADY_CONNECTED) {
+		return "MQTT client is already connected";
+	} else if (p_rc == PAHO_ERR_NOT_CONNECTED) {
+		return "MQTT client is not connected";
+	}
+	return String(mqtt::exception::reason_code_str(p_rc).c_str());
 }
 
 //###############################################################

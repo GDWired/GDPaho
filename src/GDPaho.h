@@ -106,6 +106,13 @@ namespace godot {
 			 */
 			int unsubscribe(const String p_sub);
 
+			/**
+			 * Get string reason code
+			 * @param p_rc the reason code
+			 * @return the string reason code
+			 */
+			String reason_code_string(const int p_rc);
+
 		// Public methods
 		public:
 

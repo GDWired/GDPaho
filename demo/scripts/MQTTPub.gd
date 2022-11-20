@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 func _on_Publish_toggled(button_pressed: bool) -> void:
 	_loop = button_pressed
 	if not is_connected_to_broker():
-		broker_connect()
+		var _rc = broker_reconnect()
 
 
 func _on_PublishFrequency_value_changed(value: float) -> void:

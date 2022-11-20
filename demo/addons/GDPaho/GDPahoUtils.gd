@@ -6,6 +6,10 @@ extends Node
 
 # Integer values returned from many libpaho functions
 enum ReasonCode {
+	ERR_NOT_CONNECTED = -1012,
+	ERR_ALREADY_CONNECTED = -1011,
+	ERR_CONNECTION_NOT_INITIALIZED_ONCE = -1010,
+	ERR_NOT_INIT = -1000,
 	SUCCESS = 0,
 	NORMAL_DISCONNECTION = 0,
 	GRANTED_QOS_0 = 0,
