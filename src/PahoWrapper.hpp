@@ -96,7 +96,7 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 		 * @param p_token the token
 		 */
 		void on_success(const mqtt::token& p_token) override {
-			m_gd_paho.emit_on_connect(p_token.get_reason_code());
+			// Nothing...
 		}
 
 		/**
@@ -105,6 +105,7 @@ class Callback : public virtual mqtt::callback, public virtual mqtt::iaction_lis
 		 */		
 		void connected(const std::string& p_cause) override {
 			m_gd_paho.emit_on_log(PahoLogLevel::PAHO_LOG_INFO, p_cause);
+			m_gd_paho.emit_on_connect(mqtt::ReasonCode::SUCCESS);
 		}
 
 		/**
