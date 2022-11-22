@@ -2,7 +2,7 @@
 #define GDPAHO
 
 #include <Godot.hpp>
-#include <Reference.hpp>
+#include <Object.hpp>
 #include <string.h>
 
 #include <mqtt/async_client.h>
@@ -19,8 +19,8 @@ namespace godot {
 	/**
 	 * First iteration a lot of functionality is needed (like password, TLS etc.)
 	 */
-	class GDPaho : public Reference {
-		GODOT_CLASS(GDPaho, Reference)
+	class GDPaho : public Object {
+		GODOT_CLASS(GDPaho, Object)
 
 		// Private attributs
 		private:
