@@ -19,10 +19,12 @@ export var broker_port: int = 1883
 export var broker_keep_alive: int = 60
 
 
-onready var _mqtt_client = preload("GDPaho.gdns").new()
+onready var _mqtt_client_class = preload("GDPaho.gdns")
+onready var _mqtt_client: Object = null
 
 
-func _ready():
+func initialise() -> void:
+	_mqtt_client = _mqtt_client_class.new()
 	_mqtt_client.connect("connected", self, "_on_MQTTClient_connected")
 	_mqtt_client.connect("disconnected", self, "_on_MQTTClient_disconnected")
 	_mqtt_client.connect("published", self, "_on_MQTTClient_published")
@@ -50,6 +52,15 @@ func broker_connect(new_clean_session: bool = false, new_broker_keep_alive: int 
 
 func broker_reconnect() -> int:
 	return _mqtt_client.broker_reconnect()
+
+
+func reinitialise() -> void:
+	if _mqtt_client:
+		if is_connected_to_broker():
+			_mqtt_client.broker_disconnect()
+			while is_connected_to_broker(): pass
+		_mqtt_client = null
+	initialise()
 
 
 func is_connected_to_broker() -> int:
