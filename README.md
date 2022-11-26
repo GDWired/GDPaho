@@ -3,13 +3,16 @@ A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients
 
 Works only on Windows and Linux(macOS is WIP) there is only few functions exposed.
 
+Paho lib is available on the folder lib, but it is better to compile your own lib paho.
+
 Windows
  - OpenSSL must be installed: https://slproweb.com/products/Win32OpenSSL.html
  - Copy past <Installation dir>\OpenSSL-Win64\lib\VC\static libcrypto64MD.lib and libssl64MD.lib to lib
  - Run scons target=debug (or release)
 
 Linux: 
- - WIP
+ - OpenSSL must be installed
+ - Run scons target=debug (or release)
 
 ``` gdscript
 # Initialize the client
