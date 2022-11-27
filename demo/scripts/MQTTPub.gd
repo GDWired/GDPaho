@@ -14,6 +14,7 @@ func _ready():
 	# Init values from UI
 	_loop = _publish_button.pressed
 	_publish_frequency = _publish_frequency_spin.value
+	initialise()
 
 
 func _process(delta: float) -> void:

@@ -9,6 +9,7 @@ reloadable=true
 
 Windows.64="res://addons/GDPaho/windows/libgdpaho.dll"
 X11.64="res://addons/GDPaho/linux/libgdpaho.so"
+OSX.64="res://addons/GDPaho/osx/libgdpaho.dylib"
 
 [dependencies]
 

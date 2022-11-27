@@ -22,7 +22,7 @@ _global_script_class_icons={
 
 config/name="GDPaho Demo"
 run/main_scene="res://scenes/Main.tscn"
-config/icon="res://icon.png"
+config/icon="res://GDPaho.png"
 
 [autoload]
 

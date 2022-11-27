@@ -1,7 +1,7 @@
 [gd_resource type="NativeScript" load_steps=2 format=2]
 
 [sub_resource type="GDNativeLibrary" id=1]
-entry/OSX.64 = ""
+entry/OSX.64 = "res://addons/GDPaho/osx/libgdpaho.dylib"
 entry/Windows.64 = "res://addons/GDPaho/windows/libgdpaho.dll"
 entry/X11.64 = "res://addons/GDPaho/linux/libgdpaho.so"
 dependency/OSX.64 = [  ]
