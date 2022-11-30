@@ -84,6 +84,7 @@ func publish(topic: String, payload: String, qos: int = 0, retain: bool = false)
 
 
 func _on_MQTTClient_connected(reason_code: int) -> void:
+	yield(get_tree().create_timer(0.1), "timeout") # ARM bugfix (deadlock)
 	emit_signal("connected", reason_code)
 
 

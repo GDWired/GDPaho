@@ -50,6 +50,5 @@ func _on_RefreshFrequency_value_changed(value: float) -> void:
 
 
 func _on_MQTTSub_connected(_reason_code: int):
-	yield(get_tree().create_timer(1.0), "timeout")
 	check_subscribe(_subscribe_button.pressed)
 	
