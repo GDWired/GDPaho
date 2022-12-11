@@ -247,12 +247,26 @@ class PahoWrapper : public mqtt::async_client {
 			}
 
 			/**
-			 * Connect to the broker
+			 * Unscubscribe to specific topic
 			 * @param p_topic the name of the topic
 			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
 			 */
 			int unsubscribe_to(const std::string& p_topic) {
 				const auto& l_token = unsubscribe(p_topic);
+				if (!l_token->get_reason_code()) {
+					m_gd_paho.emit_on_unsubscribe(l_token->get_message_id(), p_topic);
+				}
+				return l_token->get_reason_code();
+			}
+
+			/**
+			 * Blocking unscubscribe to specific topic
+			 * @param p_topic the name of the topic
+			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
+			 */
+			int unsubscribe_wait_to(const std::string& p_topic) {
+				const auto& l_token = unsubscribe(p_topic);
+				l_token->wait();
 				if (!l_token->get_reason_code()) {
 					m_gd_paho.emit_on_unsubscribe(l_token->get_message_id(), p_topic);
 				}

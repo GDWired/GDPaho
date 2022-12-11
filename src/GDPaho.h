@@ -107,6 +107,13 @@ namespace godot {
 			int unsubscribe(const String p_sub);
 
 			/**
+			 * Blocking unsubscribe from a topic (Message ID emit message_id_updated)
+			 * @param p_sub the unsubscription pattern
+			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
+			 */
+			int unsubscribe_wait(const String p_sub);
+
+			/**
 			 * Get string reason code
 			 * @param p_rc the reason code
 			 * @return the string reason code

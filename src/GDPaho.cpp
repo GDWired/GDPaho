@@ -33,6 +33,7 @@ void GDPaho::_register_methods() {
 	register_method("publish", &GDPaho::publish);
 	register_method("subscribe", &GDPaho::subscribe);
 	register_method("unsubscribe", &GDPaho::unsubscribe);
+	register_method("unsubscribe_wait", &GDPaho::unsubscribe_wait);
 	register_method("reason_code_string", &GDPaho::reason_code_string);
 
 	// Signals
@@ -156,6 +157,16 @@ int GDPaho::unsubscribe(const String p_sub) {
 		return PAHO_ERR_NOT_CONNECTED;
 	}
 	return m_wrapper->unsubscribe_to(p_sub.utf8().get_data());
+}
+
+int GDPaho::unsubscribe_wait(const String p_sub) {
+	if (!m_wrapper) {
+		return PAHO_ERR_NOT_INIT;
+	}
+	if (!m_wrapper->is_connected()) {
+		return PAHO_ERR_NOT_CONNECTED;
+	}
+	return m_wrapper->unsubscribe_wait_to(p_sub.utf8().get_data());
 }
 
 String GDPaho::reason_code_string(const int p_rc) {
