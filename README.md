@@ -8,40 +8,46 @@ Works on Windows, macOS and Linux but there are only few functions exposed.
 
 **Windows**
  - OpenSSL must be installed: https://slproweb.com/products/Win32OpenSSL.html
- - Copy past "[Installation dir]\OpenSSL-Win64\lib\VC\static" libcrypto64MD.lib and libssl64MD.lib to lib
  - Build paho lib
- - run scons target=debug (or release)
+ - run scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"
 
 **Linux**
  - OpenSSL must be installed (example: apt install libssl-dev)
  - Build paho lib
- - run scons target=debug (or release)
+ - run scons target=release
 
 **macOS**
  - OpenSSL must be installed using homebrew (brew install openssl@3)
  - Build paho lib
- - run scons target=debug (or release)
- 
+ - run scons target=release
  
 ## Paho build
 
 **paho.c**
- - git clone https://github.com/eclipse/paho.mqtt.c
- - cd paho.mqtt.c
- - mkdir build
- - cd build
- - [macOS] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release
- - [other] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release
- - sudo cmake --build .  --target install
+Should be done in root
+```console
+git clone https://github.com/eclipse/paho.mqtt.c.git
+cd paho.mqtt.c
+mkdir build
+cd build
+[macOS] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release
+[Windows] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DCMAKE_BUILD_TYPE=Release
+[Linux] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DCMAKE_BUILD_TYPE=Release
+cmake --build . --target install --config "MinSizeRel"
+```
 
 **paho.cpp**
- - git clone https://github.com/eclipse/paho.mqtt.cpp
- - cd paho.mqtt.cpp
- - mkdir build
- - cd build
- - cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release
- - sudo cmake --build .  --target install
-
+Should be done in root
+```console
+git clone https://github.com/eclipse/paho.mqtt.cpp.git
+cd paho.mqtt.cpp
+mkdir build
+cd build
+[macOS] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DCMAKE_BUILD_TYPE=Release 
+[Windows] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DCMAKE_BUILD_TYPE=Release
+[Linux] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release
+cmake --build . --target install --config "MinSizeRel"
+```
 
 ## API
 
