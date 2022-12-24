@@ -2,7 +2,7 @@
 
 # <p align="center">GDPaho (Godot 3.5)</p>
 
-A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot.
+A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
 Works on Windows, macOS and Linux but there are only few functions exposed.
 
