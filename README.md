@@ -23,8 +23,9 @@ Works on Windows, macOS and Linux but there are only few functions exposed.
  
 ## Paho build
 
-**paho.c**
 Should be done in root
+
+**paho.c**
 ```console
 git clone https://github.com/eclipse/paho.mqtt.c.git
 cd paho.mqtt.c
@@ -37,7 +38,6 @@ cmake --build . --target install --config "MinSizeRel"
 ```
 
 **paho.cpp**
-Should be done in root
 ```console
 git clone https://github.com/eclipse/paho.mqtt.cpp.git
 cd paho.mqtt.cpp
