@@ -4,7 +4,7 @@
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
-Works on Windows, macOS and Linux but there are only few functions exposed.
+Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/stable/development/compiling/index.html.
 
 **Windows**
  - OpenSSL must be installed: https://slproweb.com/products/Win32OpenSSL.html
@@ -48,6 +48,17 @@ cd build
 [Linux] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
 cmake --build . --target install --config "MinSizeRel"
 ```
+
+## Demo
+
+In the "demo" folder there is a sample project, after compiling the project you can open it with Godot 3.5.1. (You can also download a precompiled version of the plugin from the asset store or in the release section of github WIP)
+
+<img width="1136" alt="Capture d’écran 2022-10-27 à 15 27 05" src="https://user-images.githubusercontent.com/4105962/198297381-d3eea888-d09f-4532-a38c-585850918de8.png">
+
+The picture represent the demo project:
+ - The first line is the subscription parameters, subscribe to the SIN topic and expect JSON formatted data like [t,sin(t)] and plot it.
+ - The second line is the pulisher parameters, publish JSON formatted data to the SIN topic [t,sin(t)].
+ - The last line sends the text from the first edit line to the topic DATA (the second edit line subscribes to DATA and displays the sent text).
 
 ## API
 
