@@ -67,25 +67,25 @@ The picture represent the demo project:
 # @param host the broker address
 # @param port the broker port
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-initialise(id, host, port)
+initialise(id: String, host: String, port: String) -> int
 
 # Return true if connected 
 # @return true if connected 
-is_connected_to_broker()
+is_connected_to_broker() -> bool
 
 # Connect the client to the broker (server)
 # @param clean_session set to true to instruct the broker to clean all messages and subscriptions on disconnect, false to instruct it to keep them
 # @param broker_keep_alive keep alive time
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-broker_connect(clean_session, keep_alive)
+broker_connect(clean_session: bool, keep_alive: int) -> int
 
 # Reconnect the client to the broker (server)
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-broker_reconnect()
+broker_reconnect() -> int
 
 # Disconnect the client
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-broker_disconnect()
+broker_disconnect() -> int
 
 # Publish to a topic
 # @param topic the name of the topic
@@ -93,17 +93,17 @@ broker_disconnect()
 # @param qos the QoS used
 # @param retain if true the data is retained
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-publish(topic, data, qos, retain)
+publish(topic: String, data: String, qos: int, retain: bool) -> int
 
 # Subscribe to a topic
 # @param topic the name of the topic
 # @param qos the QoS used
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-subscribe(topic, qos)
+subscribe(topic: String, qos: int) -> int
 
 # Unsubscribe to a topic
 # @param topic the name of the topic
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
-unsubscribe(topic)
+unsubscribe(topic: String) -> int
 
 ````
