@@ -6,20 +6,19 @@ A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients
 
 Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/stable/development/compiling/index.html.
 
-**Windows**
- - OpenSSL must be installed: https://slproweb.com/products/Win32OpenSSL.html
- - Build paho lib
- - run scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"
+Dependencies:
+ - Godot build dependencies (https://docs.godotengine.org/en/stable/development/compiling/index.html)
+ - OpenSSL
+   - Windows (https://slproweb.com/products/Win32OpenSSL.html)
+   - Linux `apt install libssl-dev` or equivalent
+   - macOS `brew install openssl@3`
+ - Paho lib (see specific section below)
 
-**Linux**
- - OpenSSL must be installed (example: apt install libssl-dev)
- - Build paho lib
- - run scons target=release
-
-**macOS**
- - OpenSSL must be installed using homebrew (brew install openssl@3)
- - Build paho lib
- - run scons target=release
+To compile it:
+ - Run `git clone --recurse-submodules git@github.com:GDWired/GDOfSerial.git`
+ - Compile (on the root folder)
+   - Windows `scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
+   - Others `scons target=release` 
  
 ## Paho build
 
