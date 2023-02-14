@@ -18,12 +18,14 @@ export var broker_address: String = "localhost"
 export var broker_port: int = 1883
 export var broker_keep_alive: int = 60
 
-var _mqtt_client_class = preload("GDPaho.gdns")
+onready var _mqtt_client_class = preload("GDPaho.gdns")
 
 onready var _mqtt_client: Object = null
 
 
 func initialise() -> void:
+	if not _mqtt_client_class:
+		return
 	_mqtt_client = _mqtt_client_class.new()
 	_mqtt_client.connect("connected", self, "_on_MQTTClient_connected")
 	_mqtt_client.connect("disconnected", self, "_on_MQTTClient_disconnected")
