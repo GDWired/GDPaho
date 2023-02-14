@@ -18,8 +18,8 @@ export var broker_address: String = "localhost"
 export var broker_port: int = 1883
 export var broker_keep_alive: int = 60
 
+var _mqtt_client_class = preload("GDPaho.gdns")
 
-onready var _mqtt_client_class = preload("GDPaho.gdns")
 onready var _mqtt_client: Object = null
 
 
