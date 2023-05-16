@@ -44,6 +44,10 @@ func initialise() -> void:
 		printerr("[" + client_id + "] error during initialise, " + _mqtt_client.reason_code_string(rc_initialise))
 
 
+func reason_code_string(rc: int) -> String:
+	return _mqtt_client.reason_code_string(rc)
+
+
 func broker_connect(new_clean_session: bool = false, new_broker_keep_alive: int = 60) -> int:
 	var rc_connect: int = _mqtt_client.broker_connect(new_clean_session, new_broker_keep_alive)
 	if not rc_connect:
