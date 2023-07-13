@@ -15,7 +15,7 @@ Dependencies:
  - Paho lib (see specific section below)
 
 To compile it:
- - Run `git clone --recurse-submodules git@github.com:GDWired/GDOfSerial.git`
+ - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
  - Compile (on the root folder)
    - Windows `scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
    - Others `scons target=release` 
