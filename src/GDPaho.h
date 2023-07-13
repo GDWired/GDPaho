@@ -56,6 +56,13 @@ namespace godot {
 			int initialise(const String p_id, const String p_host, const String p_port);
 
 			/**
+			 * Set username & password
+			 * @param p_username username
+			 * @param p_pasword password
+			 */
+			int username_pw_set(const String p_username, const String p_password);
+
+			/**
 			 * Return true if connected
 			 * @return true if connected
 		 	 */

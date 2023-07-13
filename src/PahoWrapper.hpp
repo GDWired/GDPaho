@@ -193,6 +193,16 @@ class PahoWrapper : public mqtt::async_client {
 			virtual ~PahoWrapper() {
 				delete m_callback;
 			}
+
+			/**
+			 * Set username & password
+			 * @param p_username username
+			 * @param p_pasword password
+			 */
+			void username_pw_set(const std::string& p_username, const std::string& p_password) {
+				m_connection_options.set_user_name(p_username);
+				m_connection_options.set_password(p_password);
+			}
 			
 			/**
 			 * Connect to the broker

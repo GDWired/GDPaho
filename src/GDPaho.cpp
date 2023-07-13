@@ -26,6 +26,7 @@ GDPaho::~GDPaho() {
 void GDPaho::_register_methods() {
 	// Methods
 	register_method("initialise", &GDPaho::initialise);
+	register_method("username_pw_set", &GDPaho::username_pw_set);
 	register_method("is_connected_to_broker", &GDPaho::is_connected_to_broker);
 	register_method("broker_connect", &GDPaho::connect);
 	register_method("broker_reconnect", &GDPaho::reconnect);
@@ -86,6 +87,14 @@ int GDPaho::initialise(const String p_id, const String p_host, const String p_po
 	} catch (std::exception& p_exception) {
 		return atoi(p_exception.what());
 	}
+}
+
+int GDPaho::username_pw_set(const String p_username, const String p_password) {
+	if (!m_wrapper) {
+		return PAHO_ERR_NOT_INIT;
+	}
+	m_wrapper->username_pw_set(p_username.utf8().get_data(), p_password.utf8().get_data());
+	return mqtt::ReasonCode::SUCCESS;
 }
 
 bool GDPaho::is_connected_to_broker() {
