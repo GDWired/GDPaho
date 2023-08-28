@@ -4,10 +4,10 @@
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
-Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/stable/development/compiling/index.html.
+Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/3.5/development/compiling/index.html.
 
 Dependencies:
- - Godot build dependencies (https://docs.godotengine.org/en/stable/development/compiling/index.html)
+ - Godot build dependencies (https://docs.godotengine.org/en/3.5/development/compiling/index.html)
  - OpenSSL
    - Windows (https://slproweb.com/products/Win32OpenSSL.html)
    - Linux `apt install libssl-dev` or equivalent
