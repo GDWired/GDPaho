@@ -1,5 +1,7 @@
 #include "GDPaho.h"
 
+#include <mutex>
+
 #include <Godot.hpp>
 #include "PahoWrapper.hpp"
 
@@ -25,6 +27,7 @@ GDPaho::~GDPaho() {
 
 void GDPaho::_register_methods() {
 	// Methods
+	register_method("loop", &GDPaho::loop);
 	register_method("initialise", &GDPaho::initialise);
 	register_method("username_pw_set", &GDPaho::username_pw_set);
 	register_method("is_connected_to_broker", &GDPaho::is_connected_to_broker);
@@ -68,6 +71,45 @@ void GDPaho::_register_methods() {
 }
 
 void GDPaho::_init() {
+}
+
+void GDPaho::loop() {
+	//while (true) {
+		m_mutex.lock();
+		for (const auto& l_data : m_mqtt_data) {
+			switch (l_data.m_signal_type) {
+				case MQTTSignal::connected:
+					emit_signal("connected", l_data.m_rc);
+					break;
+				case MQTTSignal::disconnected:
+					emit_signal("disconnected");
+					break;
+				case MQTTSignal::published:
+					emit_signal("published", l_data.m_id);
+					break;
+				case MQTTSignal::received:
+					emit_signal("received", l_data.m_topic, l_data.m_message);
+					break;
+				case MQTTSignal::subscribed:
+					emit_signal("subscribed", l_data.m_id, l_data.m_topic);
+					break;
+				case MQTTSignal::unsubscribed:
+					emit_signal("unsubscribed", l_data.m_id, l_data.m_topic);
+					break;
+				case MQTTSignal::log:
+					emit_signal("log", l_data.m_level, l_data.m_message);
+					break;
+				case MQTTSignal::error:
+					emit_signal("error", l_data.m_message, l_data.m_rc);
+					break;
+				default:
+					break;
+			}
+		}
+		m_mqtt_data.clear();
+		m_mutex.unlock();
+	//	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	//}
 }
 
 //###############################################################
@@ -201,33 +243,49 @@ String GDPaho::reason_code_string(const int p_rc) {
 //###############################################################
 
 void GDPaho::emit_on_connect(const int p_rc) {
-	emit_signal("connected", p_rc);
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::connected, p_rc));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_disconnect() {
-	emit_signal("disconnected");
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::disconnected));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_publish(const int p_mid) {
-	emit_signal("published", p_mid);
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::published, 0, p_mid));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_message(const mqtt::const_message_ptr p_message) {
-	emit_signal("received", String(p_message->get_topic().c_str()),  String(p_message->to_string().c_str()));
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::received, 0, 0, 0, String(p_message->to_string().c_str()), String(p_message->get_topic().c_str())));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_subscribe(const int p_mid, const std::string& p_topic) {
-	emit_signal("subscribed", p_mid, String(p_topic.c_str()));
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::received, 0, p_mid, 0, "", String(p_topic.c_str())));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_unsubscribe(const int p_mid, const std::string& p_topic) {
-	emit_signal("unsubscribed", p_mid, String(p_topic.c_str()));
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::unsubscribed, 0, p_mid, 0, "", String(p_topic.c_str())));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_log(const int p_level, const std::string& p_message) {
-	emit_signal("log", p_level, String(p_message.c_str()));
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::log, 0, 0, p_level, String(p_message.c_str())));
+	m_mutex.unlock();
 }
 
 void GDPaho::emit_on_error(const std::string& p_message, const int p_rc) {
-	emit_signal("error", String(p_message.c_str()), p_rc);
+	m_mutex.lock();
+	m_mqtt_data.push_back(MQTTData(MQTTSignal::error, p_rc, 0, 0, String(p_message.c_str())));
+	m_mutex.unlock();
 }

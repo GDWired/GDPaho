@@ -16,6 +16,56 @@ class PahoWrapper;
 
 namespace godot {
 
+	enum MQTTSignal {
+		connected,
+		disconnected,
+		published,
+		received,
+		subscribed,
+		unsubscribed,
+		log,
+		error
+	};
+
+	/**
+	 * Use to send data safely
+	 */
+	struct MQTTData {
+		MQTTData() = default;
+		MQTTData(const MQTTSignal& p_type, int p_rc = 0, int p_id = 0, int p_level = 0, String p_message = "", String p_topic = "") :
+			m_signal_type(p_type),
+			m_rc(p_rc), 
+			m_id(p_id), 
+			m_level(p_level), 
+			m_message(p_message), 
+			m_topic(p_topic) {
+			}
+		/**
+	 	 * Signal type
+	 	 */
+		MQTTSignal m_signal_type;
+		/**
+	 	 * Reason code
+	 	 */
+		int m_rc;
+		/**
+	 	 * Message id of the subscribe message
+	 	 */
+		int m_id;
+		/**
+	 	 * Log message level from the values: PAHO_LOG_INFO PAHO_LOG_NOTICE PAHO_LOG_WARNING PAHO_LOG_ERR PAHO_LOG_DEBUG
+	 	 */
+		int m_level;
+		/**
+	 	 * Message
+	 	 */
+		String m_message;
+		/**
+	 	 * Topic
+	 	 */
+		String m_topic;
+	};
+
 	/**
 	 * First iteration a lot of functionality is needed (like password, TLS etc.)
 	 */
@@ -33,6 +83,17 @@ namespace godot {
 			 * If true, the connection parameter has been set at least once
 			 */
 			bool m_connection_initialized_once;
+
+			/**
+			 * Mutex
+			 */
+			std::mutex m_mutex;
+
+			/**
+			 * MQTTData
+			 */
+			std::vector<MQTTData> m_mqtt_data;
+
 
 		// Private methods
 		private:
@@ -155,8 +216,14 @@ namespace godot {
 
 			/**
 			 * Init the class
+			 * @param p_delta delta time from the previous call
 			 */
 			void _init();
+
+			/**
+			 * Main loop
+			 */
+			void loop();
 
 			//###############################################################
 			//	Callbacks

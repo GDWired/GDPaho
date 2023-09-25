@@ -23,7 +23,8 @@ func _process(delta: float) -> void:
 	_time += delta
 	if _time >= _refresh_time:
 		for d in _data:
-			_chart.create_new_point({label = d[0], values = { sinus_x = d[1] }})
+			if d:
+				_chart.create_new_point({label = d[0], values = { sinus_x = d[1] }})
 		_data.clear()
 		_time = 0.0
 
@@ -37,8 +38,9 @@ func check_subscribe(button_pressed: bool) -> void:
 
 func _on_MQTTClient_received(_topic: String, payload: String) -> void:
 	# MQTT data received
-	var result = JSON.parse(payload).result
-	_data.append(result)
+	if payload:
+		var result = JSON.parse(payload).result
+		_data.append(result)
 
 
 func _on_Subscribe_toggled(button_pressed: bool) -> void:

@@ -21,7 +21,6 @@ export var username: String = ""
 export var password: String = ""
 
 onready var _mqtt_client_class = preload("GDPaho.gdns")
-
 onready var _mqtt_client: Object = null
 
 
@@ -37,17 +36,28 @@ func initialise() -> void:
 	_mqtt_client.connect("unsubscribed", self, "_on_MQTTClient_unsubscribed")
 	_mqtt_client.connect("log", self, "_on_MQTTClient_log")
 	_mqtt_client.connect("error", self, "_on_MQTTClient_error")
+	
 	var rc_initialise: int = _mqtt_client.initialise(client_id, broker_address, broker_port)
+	var rc = rc_initialise
 	if not rc_initialise:
 		if username != "" and password != "":
 			var rc_username_pwt: int = _mqtt_client.username_pw_set(username, password)
 			if rc_username_pwt:
 				printerr("[" + client_id + "] error during connect, " + _mqtt_client.reason_code_string(rc_username_pwt))
 		var rc_connect: int = _mqtt_client.broker_connect(clean_session, broker_keep_alive)
+		rc = rc + rc_connect
 		if rc_connect:
 			printerr("[" + client_id + "] error during connect, " + _mqtt_client.reason_code_string(rc_connect))
 	else:
 		printerr("[" + client_id + "] error during initialise, " + _mqtt_client.reason_code_string(rc_initialise))
+	
+	if rc == 0:
+		var loop_timer = Timer.new()
+		loop_timer.set_wait_time(0.01)
+		loop_timer.set_one_shot(false)
+		loop_timer.connect("timeout", _mqtt_client, "loop")
+		add_child(loop_timer)
+		loop_timer.start()
 
 
 func reason_code_string(rc: int) -> String:
