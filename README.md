@@ -1,13 +1,13 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/4105962/204161994-7b135944-4e3a-47af-8cf2-0c7a2b13701a.png" width="256"></p>
 
-# <p align="center">GDPaho (Godot 3.5)</p>
+# <p align="center">GDPaho (Godot 4.1)</p>
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
-Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/3.5/development/compiling/index.html.
+Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/4.1/development/compiling/index.html.
 
 Dependencies:
- - Godot build dependencies (https://docs.godotengine.org/en/3.5/development/compiling/index.html)
+ - Godot build dependencies (https://docs.godotengine.org/en/4.1/development/compiling/index.html)
  - OpenSSL
    - Windows (https://slproweb.com/products/Win32OpenSSL.html)
    - Linux `apt install libssl-dev` or equivalent
@@ -17,8 +17,10 @@ Dependencies:
 To compile it:
  - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
  - Compile (on the root folder)
-   - Windows `scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
-   - Others `scons target=release` 
+   - Windows `scons target=template_release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
+   - Others `scons target=template_release`
+ 
+Compile it in debug too `target=template_debug` to use it in editor.  
  
 ## Paho build
 
