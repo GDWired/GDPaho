@@ -1,42 +1,30 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://bq0xjlb2oh6pv"]
 
-[ext_resource path="res://scenes/MQTTPub.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scenes/MQTTSub.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/MQTTPull.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/MQTTPush.tscn" type="PackedScene" id=4]
+[ext_resource type="PackedScene" uid="uid://xt42rmite512" path="res://scenes/MQTTPub.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://cvv1sfatgqx84" path="res://scenes/MQTTSub.tscn" id="2"]
+[ext_resource type="PackedScene" uid="uid://hurkfaaurpju" path="res://scenes/MQTTPull.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://dons7x44t03xa" path="res://scenes/MQTTPush.tscn" id="4"]
 
 [node name="Main" type="VBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 10.0
-margin_right = -10.0
-margin_bottom = -10.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
 
-[node name="MQTTSub" parent="." instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 1004.0
-margin_bottom = 507.0
+[node name="MQTTSub" parent="." instance=ExtResource("2")]
+layout_mode = 2
 
-[node name="MQTTPub" parent="." instance=ExtResource( 1 )]
-anchor_right = 0.0
-margin_top = 511.0
-margin_right = 1004.0
-margin_bottom = 551.0
+[node name="MQTTPub" parent="." instance=ExtResource("1")]
+layout_mode = 2
 
 [node name="PushPull" type="HBoxContainer" parent="."]
-margin_top = 555.0
-margin_right = 1004.0
-margin_bottom = 580.0
+layout_mode = 2
 
-[node name="MQTTPush" parent="PushPull" instance=ExtResource( 4 )]
-anchor_right = 0.0
-margin_right = 404.0
+[node name="MQTTPush" parent="PushPull" instance=ExtResource("4")]
+layout_mode = 2
 
-[node name="MQTTPull" parent="PushPull" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 408.0
-margin_right = 1004.0
-margin_bottom = 25.0
+[node name="MQTTPull" parent="PushPull" instance=ExtResource("3")]
+layout_mode = 2

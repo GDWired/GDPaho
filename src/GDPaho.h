@@ -1,9 +1,9 @@
 #ifndef GDPAHO
 #define GDPAHO
 
-#include <Godot.hpp>
-#include <Object.hpp>
-#include <string.h>
+#include <godot_cpp/variant/variant.hpp>
+#include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/core/binder_common.hpp>
 
 #include <mqtt/async_client.h>
 
@@ -69,8 +69,8 @@ namespace godot {
 	/**
 	 * First iteration a lot of functionality is needed (like password, TLS etc.)
 	 */
-	class GDPaho : public Object {
-		GODOT_CLASS(GDPaho, Object)
+	class GDPaho : public Node {
+		GDCLASS(GDPaho, Node)
 
 		// Private attributs
 		private:
@@ -212,13 +212,7 @@ namespace godot {
 			/**
 			 * Bind methods, signals etc.
 			 */
-			static void _register_methods();
-
-			/**
-			 * Init the class
-			 * @param p_delta delta time from the previous call
-			 */
-			void _init();
+			static void _bind_methods();
 
 			/**
 			 * Main loop

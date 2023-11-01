@@ -6,13 +6,13 @@ var _time: float = 0.0
 var _x: float = 0.0
 var _publish_frequency: float = 10
 
-onready var _publish_button : Button = $Publish
-onready var _publish_frequency_spin : SpinBox = $PublishFrequency
+@onready var _publish_button : Button = $Publish
+@onready var _publish_frequency_spin : SpinBox = $PublishFrequency
 
 
 func _ready():
 	# Init values from UI
-	_loop = _publish_button.pressed
+	_loop = _publish_button.button_pressed
 	_publish_frequency = _publish_frequency_spin.value
 	initialise()
 

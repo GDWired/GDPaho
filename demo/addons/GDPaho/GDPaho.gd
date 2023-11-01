@@ -1,3 +1,4 @@
+@tool
 ##
 # Plugin main
 # If you have any questions/remarks
@@ -5,7 +6,6 @@
 #	- jferdelyi@gmail.com
 ##
 
-tool
 extends EditorPlugin
 
 func _enter_tree():
