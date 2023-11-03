@@ -1,0 +1,10 @@
+^C:\WORKSPACES\GIT\GDPAHOSS\BUILD\CMAKEFILES\2D664EF055932D984C0F6DC7AAAC1454\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Workspaces/GIT/GDPahoss -BC:/Workspaces/GIT/GDPahoss/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Workspaces/GIT/GDPahoss/build/GDPaho.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
