@@ -22,15 +22,18 @@ Dependencies:
    - macOS `brew install openssl@3`
  - Paho lib (see specific section below)
 
-To compile it:
+The editor uses the debug version, but if you want to export your project as a release, you have to compile everything as a release as well:
  - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
- - Compile (on the root folder)
-   - `scons target=template_release` and `scons target=template_debug` only once (generate godot-cpp library : seems to be faster than cmake for now)
-   - `make build`
-   - `cd build`
-   - `cmake ..`
-   - `cmake --build .`
-  
+ - Compile Godot CPP (only once)
+   - Release `cmake -DCMAKE_BUILD_TYPE=Release godot-cpp`
+   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug build`
+   - `cmake --build godot-cpp`
+ - Compile the project
+   - `mkdir build`
+   - Release `cmake -DCMAKE_BUILD_TYPE=Release build`
+   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug build`
+   - `cmake --build build`
+
 ## Paho build
 
 Should be done in root
