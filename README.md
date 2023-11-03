@@ -84,7 +84,7 @@ cmake --build . --target install --config "MinSizeRel"
 
 In the "demo" folder there is a sample project, after compiling the project you can open it with Godot 3.5.1. (You can also download a precompiled version of the plugin from the asset store or in the release section of github WIP)
 
-<img width="1136" alt="Capture d’écran 2022-10-27 à 15 27 05" src="https://user-images.githubusercontent.com/4105962/198297381-d3eea888-d09f-4532-a38c-585850918de8.png">
+<img width="1264" alt="Capture d’écran 2023-11-03 à 23 03 35" src="https://github.com/GDWired/GDPaho/assets/4105962/6c65e9e1-abcc-44d4-af39-d0c06b554a0a">
 
 The picture represent the demo project:
  - The first line is the subscription parameters, subscribe to the SIN topic and expect JSON formatted data like [t,sin(t)] and plot it.
