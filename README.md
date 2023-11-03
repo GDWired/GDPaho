@@ -2,6 +2,14 @@
 
 # <p align="center">GDPaho (Godot 4.1)</p>
 
+WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+
+Not yet tested on Linux, works with scons on macOS and works with cmake on Windows. Should work on all platforms using cmake!
+UTF8 encoding does not work as expected :/
+
+WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+
+
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
 Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/4.1/development/compiling/index.html.
@@ -17,11 +25,12 @@ Dependencies:
 To compile it:
  - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
  - Compile (on the root folder)
-   - Windows `scons target=template_release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
-   - Others `scons target=template_release`
- 
-Compile it in debug too `target=template_debug` to use it in editor.  
- 
+   - `scons target=template_release` and `scons target=template_debug` only once (generate godot-cpp library : seems to be faster than cmake for now)
+   - `make build`
+   - `cd build`
+   - `cmake ..`
+   - `cmake --build .`
+  
 ## Paho build
 
 Should be done in root
