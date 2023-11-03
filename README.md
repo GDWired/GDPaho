@@ -33,6 +33,24 @@ The editor uses the debug version, but if you want to export your project as a r
    - Release `cmake -DCMAKE_BUILD_TYPE=Release build`
    - Debug `cmake -DCMAKE_BUILD_TYPE=Debug build`
    - `cmake --build build`
+  
+One command debug
+```cmake
+mkdir build
+cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp
+cmake --build godot-cpp
+cmake -DCMAKE_BUILD_TYPE=Debug build
+cmake --build build
+```
+
+One command release
+```cmake
+mkdir build
+cmake -DCMAKE_BUILD_TYPE=Release build
+cmake --build godot-cpp
+cmake -DCMAKE_BUILD_TYPE=Release build
+cmake --build build
+```
 
 ## Paho build
 
