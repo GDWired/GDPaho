@@ -26,12 +26,12 @@ The editor uses the debug version, but if you want to export your project as a r
  - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
  - Compile Godot CPP (only once)
    - Release `cmake -DCMAKE_BUILD_TYPE=Release godot-cpp`
-   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug build`
+   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp`
    - `cmake --build godot-cpp`
  - Compile the project
    - `mkdir build`
    - Release `cmake -DCMAKE_BUILD_TYPE=Release build`
-   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug build`
+   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug -B build`
    - `cmake --build build`
   
 One command debug
@@ -39,7 +39,7 @@ One command debug
 mkdir build
 cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp
 cmake --build godot-cpp
-cmake -DCMAKE_BUILD_TYPE=Debug build
+cmake -DCMAKE_BUILD_TYPE=Debug -B build
 cmake --build build
 ```
 
@@ -48,7 +48,7 @@ One command release
 mkdir build
 cmake -DCMAKE_BUILD_TYPE=Release build
 cmake --build godot-cpp
-cmake -DCMAKE_BUILD_TYPE=Release build
+cmake -DCMAKE_BUILD_TYPE=Release -B build
 cmake --build build
 ```
 
