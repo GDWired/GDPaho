@@ -8,6 +8,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(TARGET_PATH x11)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(TARGET_PATH win64)
+	set(PAHO_MQTT_C_LIBRARIES "C:/Program Files (x86)/Eclipse Paho C/lib/" CACHE PATH "Paho C libraries directory override" FORCE)
+	set(PAHO_MQTT_C_INCLUDE_DIRS "C:/Program Files (x86)/Eclipse Paho C/include/" CACHE PATH "Paho C includes directory override" FORCE)
+	set(PahoMqttCpp_DIR "C:/Program Files (x86)/paho-mqtt-cpp/lib/cmake/PahoMqttCpp" CACHE PATH "Paho CPP directory override" FORCE)
+
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(TARGET_PATH macos)
 else()
@@ -148,35 +152,28 @@ if(ANDROID)
 	set(SYSTEM_NAME ${SYSTEM_NAME}.${ANDROID_ABI})
 endif()
 
+find_package(OpenSSL REQUIRED)
 find_package(PahoMqttCpp REQUIRED)
-if(CMAKE_VERSION VERSION_GREATER "3.13")
-	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-		target_link_directories(${PROJECT_NAME}
-			PRIVATE
-			${CPP_BINDINGS_PATH}/bin/
-		)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-		target_link_directories(${PROJECT_NAME}
-			PRIVATE
-			${CPP_BINDINGS_PATH}/bin/
-		)
-	elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-		target_link_directories(${PROJECT_NAME}
-			PRIVATE
-			/opt/homebrew/opt/openssl@3/lib
-			${CPP_BINDINGS_PATH}/bin/
-		)
-		target_link_libraries(${PROJECT_NAME}
-			libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}.a>
-			ssl
-			PahoMqttCpp::paho-mqttpp3-static
-		)
-	else()
-		message(FATAL_ERROR "Not implemented support for ${CMAKE_SYSTEM_NAME}")
-	endif()
-else()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	target_link_directories(${PROJECT_NAME}
+		PRIVATE
+		${CPP_BINDINGS_PATH}/bin/${BUILD_TYPE}
+	)
 	target_link_libraries(${PROJECT_NAME}
-		${CPP_BINDINGS_PATH}/bin/libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
+		godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+		OpenSSL::SSL
+		PahoMqttCpp::paho-mqttpp3-static
+	)
+else()
+	target_link_directories(${PROJECT_NAME}
+		PRIVATE
+		${CPP_BINDINGS_PATH}/bin/
+	)
+	target_link_libraries(${PROJECT_NAME}
+		lbgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+		OpenSSL::SSL
+		PahoMqttCpp::paho-mqttpp3-static
 	)
 endif()
 

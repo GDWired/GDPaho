@@ -24,31 +24,22 @@ Dependencies:
 
 The editor uses the debug version, but if you want to export your project as a release, you have to compile everything as a release as well:
  - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
- - Compile Godot CPP (only once)
-   - Release `cmake -DCMAKE_BUILD_TYPE=Release godot-cpp`
-   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp`
-   - `cmake --build godot-cpp`
- - Compile the project
-   - `mkdir build`
-   - Release `cmake -DCMAKE_BUILD_TYPE=Release build`
-   - Debug `cmake -DCMAKE_BUILD_TYPE=Debug -B build`
-   - `cmake --build build`
   
-One command debug
+One command compile debug
 ```cmake
-mkdir build
-cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp
+cmake -DCMAKE_BUILD_TYPE=Debug godot-cpp -B godot-cpp
 cmake --build godot-cpp
-cmake -DCMAKE_BUILD_TYPE=Debug -B build
+mkdir build
+cmake -DCMAKE_BUILD_TYPE=Debug . -B build
 cmake --build build
 ```
 
-One command release
+One command compile release
 ```cmake
-mkdir build
-cmake -DCMAKE_BUILD_TYPE=Release build
+cmake -DCMAKE_BUILD_TYPE=Release godot-cpp -B godot-cpp
 cmake --build godot-cpp
-cmake -DCMAKE_BUILD_TYPE=Release -B build
+mkdir build
+cmake -DCMAKE_BUILD_TYPE=Release . -B build
 cmake --build build
 ```
 
