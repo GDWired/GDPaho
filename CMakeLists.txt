@@ -171,7 +171,7 @@ else()
 		${CPP_BINDINGS_PATH}/bin/
 	)
 	target_link_libraries(${PROJECT_NAME}
-		lbgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
+		libgodot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>.a
 		OpenSSL::SSL
 		PahoMqttCpp::paho-mqttpp3-static
 	)
