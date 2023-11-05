@@ -9,6 +9,6 @@ macos.debug = "res://addons/GDPaho/bin/macos/libgdpaho.debug.dylib"
 macos.release = "res://addons/GDPaho/bin/macos/libgdpaho.release.dylib"
 windows.debug.x86_64 = "res://addons/GDPaho/bin/windows/libgdpaho.debug.dll"
 windows.release.x86_64 = "res://addons/GDPaho/bin/windows/libgdpaho.release.dll"
-linux.debug.x86_64 = "res://addons/GDPaho/bin/linux/libgdpaho.debug.so"
-linux.release.x86_64 = "res://addons/GDPaho/bin/linux/libgdpaho.release.so"
+linux.debug.x86_64 = "res://addons/GDPaho/bin/x11/libgdpaho.debug.so"
+linux.release.x86_64 = "res://addons/GDPaho/bin/x11/libgdpaho.release.so"
 

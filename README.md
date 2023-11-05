@@ -2,12 +2,12 @@
 
 # <p align="center">GDPaho (Godot 4.1)</p>
 
-WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
 
 Not yet tested on Linux, works with scons on macOS and works with cmake on Windows. Should work on all platforms using cmake!
 UTF8 encoding does not work as expected :/
 
-WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
+WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
 
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
@@ -21,9 +21,17 @@ Dependencies:
    - Linux `apt install libssl-dev` or equivalent
    - macOS `brew install openssl@3`
  - Paho lib (see specific section below)
+ - cmake
+   - Windows (https://cmake.org/download) or maybe using Visual Studio Installer
+   - Linux `apt install cmake` or equivalent
+   - macOS `brew install cmake`
+ - git
+   - Windows (https://git-scm.com/downloads)
+   - Linux `apt install git` or equivalent
+   - macOS `brew install git`
 
 The editor uses the debug version, but if you want to export your project as a release, you have to compile everything as a release as well:
- - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
+ - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git -b godot-4`
   
 One command compile debug
 ```cmake

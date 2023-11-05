@@ -124,7 +124,6 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${HEADERS})
 
 target_include_directories(${PROJECT_NAME} SYSTEM
 	PRIVATE
-		include
 		${CPP_BINDINGS_PATH}/include
 		${CPP_BINDINGS_PATH}/gen/include
 		${GODOT_GDEXTENSION_DIR}
