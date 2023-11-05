@@ -23,5 +23,3 @@ text = "Received data:"
 custom_minimum_size = Vector2(200, 25)
 layout_mode = 2
 text = "<no_data>"
-
-[connection signal="connected" from="." to="." method="_on_MQTTPull_connected"]
