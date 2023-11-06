@@ -4,7 +4,7 @@
 
 WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
 
-Not yet tested on Linux, works with scons on macOS and works with cmake on Windows. Should work on all platforms using cmake!
+Tested on macOS, Linux and Windows using cmake. For macOS and Linux it seems ok but not on Windows
 UTF8 encoding does not work as expected :/
 
 WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
