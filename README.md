@@ -4,7 +4,8 @@
 
 WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
 
-Tested on macOS, Linux and Windows using cmake. For macOS and Linux it seems ok but not on Windows
+Tested on macOS, Linux and Windows using cmake. For macOS and Linux it seems ok but not on Windows.
+
 UTF8 encoding does not work as expected :/
 
 WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
