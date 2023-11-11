@@ -1,19 +1,42 @@
 cmake_minimum_required(VERSION 3.6)
 project(gdpaho)
 
+option(BUILD_FOR_EDITOR "If true, create and install libs as release ready to use in the demo folder" FALSE)
+
 set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
 set(CPP_BINDINGS_PATH godot-cpp CACHE STRING "Path to C++ bindings")
 
+if(DEFINED BUILD_FOR_EDITOR)
+	if(${BUILD_FOR_EDITOR})
+		set(CMAKE_BUILD_TYPE Release)
+		message("Build for editor mode ignore CMAKE_BUILD_TYPE, " CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+		execute_process(
+			COMMAND cmake -DCMAKE_BUILD_TYPE=Release godot-cpp -B godot-cpp
+			WORKING_DIRECTORY "."
+			COMMAND_ECHO STDOUT
+		)
+		execute_process(
+			COMMAND cmake --build godot-cpp
+			WORKING_DIRECTORY "."
+			COMMAND_ECHO STDOUT
+		)
+	endif()
+endif()
+
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set(TARGET_PATH x11)
+	set(LIB_EXT ".so")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(TARGET_PATH win64)
-	set(PAHO_MQTT_C_LIBRARIES "C:/Program Files (x86)/Eclipse Paho C/lib/" CACHE PATH "Paho C libraries directory override" FORCE)
+	set(PAHO_MQTT_C_LIBRARIES "C:/Program Files (x86)/Eclipse Paho C/lib/paho-mqtt3as-static.lib" CACHE PATH "Paho C libraries directory override" FORCE)
 	set(PAHO_MQTT_C_INCLUDE_DIRS "C:/Program Files (x86)/Eclipse Paho C/include/" CACHE PATH "Paho C includes directory override" FORCE)
 	set(PahoMqttCpp_DIR "C:/Program Files (x86)/paho-mqtt-cpp/lib/cmake/PahoMqttCpp" CACHE PATH "Paho CPP directory override" FORCE)
+	set(LIB_EXT ".dll")
 
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(TARGET_PATH macos)
+	set(LIB_EXT ".dylib")
+
 else()
 	message(FATAL_ERROR "Not implemented support for ${CMAKE_SYSTEM_NAME}")
 endif()
@@ -157,7 +180,7 @@ find_package(PahoMqttCpp REQUIRED)
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	target_link_directories(${PROJECT_NAME}
 		PRIVATE
-		${CPP_BINDINGS_PATH}/bin/${BUILD_TYPE}
+		${CPP_BINDINGS_PATH}/bin/Debug # "Debug" Always seems to be a bug on Windows
 	)
 	target_link_libraries(${PROJECT_NAME}
 		godot-cpp.${SYSTEM_NAME}.${BUILD_TYPE}$<$<NOT:$<PLATFORM_ID:Android>>:.${BITS}>
@@ -175,12 +198,18 @@ else()
 		PahoMqttCpp::paho-mqttpp3-static
 	)
 endif()
-
-# Add the compile flags
-set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY COMPILE_FLAGS ${GODOT_COMPILE_FLAGS})
-set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${GODOT_LINKER_FLAGS})
+	
+	# Add the compile flags
+	set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY COMPILE_FLAGS ${GODOT_COMPILE_FLAGS})
+	set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${GODOT_LINKER_FLAGS})
 if(CMAKE_BUILD_TYPE MATCHES Debug)
 	set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME "gdpaho.debug")
 else()
 	set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME "gdpaho.release")
+endif()
+
+if(${BUILD_FOR_EDITOR})
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy ${BUILD_PATH}/${PROJECT_NAME}.release${LIB_EXT} ${BUILD_PATH}/gdpaho.debug${LIB_EXT}
+	)
 endif()

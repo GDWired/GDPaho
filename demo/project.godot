@@ -23,6 +23,10 @@ GDPahoUtils="*res://addons/GDPaho/GDPahoUtils.gd"
 
 window/dpi/allow_hidpi=false
 
+[dotnet]
+
+project/assembly_name="GDPaho Demo"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/GDPaho/plugin.cfg", "res://addons/easy_charts/plugin.cfg")
