@@ -1,7 +1,7 @@
 extends PahoClient
 
 
-onready var _data : Node = $Data
+@onready var _data : Node = $Data
 
 
 func _ready():

@@ -1,5 +1,6 @@
+@icon("icon.png")
 extends Node
-class_name PahoClient, "icon.png"
+class_name PahoClient
 
 
 signal connected(reason_code)
@@ -12,32 +13,29 @@ signal log_received(level, message)
 signal error_received(message, reason_code)
 
 
-export var client_id: String = "MQTTClient" 
-export var clean_session: bool = true 
-export var broker_address: String = "localhost"
-export var broker_port: int = 1883
-export var broker_keep_alive: int = 60
-export var username: String = ""
-export var password: String = ""
+@export var client_id: String = "MQTTClient" 
+@export var clean_session: bool = true 
+@export var broker_address: String = "localhost"
+@export var broker_port: int = 1883
+@export var broker_keep_alive: int = 60
+@export var username: String = ""
+@export var password: String = ""
 
-onready var _mqtt_client_class = preload("GDPaho.gdns")
-onready var _mqtt_client: Object = null
+@onready var _mqtt_client: Object = null
 
 
 func initialise() -> void:
-	if not _mqtt_client_class:
-		return
-	_mqtt_client = _mqtt_client_class.new()
-	_mqtt_client.connect("connected", self, "_on_MQTTClient_connected")
-	_mqtt_client.connect("disconnected", self, "_on_MQTTClient_disconnected")
-	_mqtt_client.connect("published", self, "_on_MQTTClient_published")
-	_mqtt_client.connect("received", self, "_on_MQTTClient_received")
-	_mqtt_client.connect("subscribed", self, "_on_MQTTClient_subscribed")
-	_mqtt_client.connect("unsubscribed", self, "_on_MQTTClient_unsubscribed")
-	_mqtt_client.connect("log", self, "_on_MQTTClient_log")
-	_mqtt_client.connect("error", self, "_on_MQTTClient_error")
+	_mqtt_client = GDPaho.new()
+	_mqtt_client.connect("connected", Callable(self, "_on_MQTTClient_connected"))
+	_mqtt_client.connect("disconnected", Callable(self, "_on_MQTTClient_disconnected"))
+	_mqtt_client.connect("published", Callable(self, "_on_MQTTClient_published"))
+	_mqtt_client.connect("received", Callable(self, "_on_MQTTClient_received"))
+	_mqtt_client.connect("subscribed", Callable(self, "_on_MQTTClient_subscribed"))
+	_mqtt_client.connect("unsubscribed", Callable(self, "_on_MQTTClient_unsubscribed"))
+	_mqtt_client.connect("log", Callable(self, "_on_MQTTClient_log"))
+	_mqtt_client.connect("error", Callable(self, "_on_MQTTClient_error"))
 	
-	var rc_initialise: int = _mqtt_client.initialise(client_id, broker_address, broker_port)
+	var rc_initialise: int = _mqtt_client.initialise(client_id, broker_address, str(broker_port))
 	var rc = rc_initialise
 	if not rc_initialise:
 		if username != "" and password != "":
@@ -55,7 +53,7 @@ func initialise() -> void:
 		var loop_timer = Timer.new()
 		loop_timer.set_wait_time(0.01)
 		loop_timer.set_one_shot(false)
-		loop_timer.connect("timeout", _mqtt_client, "loop")
+		loop_timer.connect("timeout", Callable(_mqtt_client, "loop"))
 		add_child(loop_timer)
 		loop_timer.start()
 
@@ -106,7 +104,7 @@ func publish(topic: String, payload: String, qos: int = 0, retain: bool = false)
 
 
 func _on_MQTTClient_connected(reason_code: int) -> void:
-	yield(get_tree().create_timer(0.1), "timeout") # ARM bugfix (deadlock)
+	await get_tree().create_timer(0.1).timeout
 	emit_signal("connected", reason_code)
 
 
@@ -136,4 +134,3 @@ func _on_MQTTClient_log(level: int, message: String) -> void:
 
 func _on_MQTTClient_error(message: String, reason_code: int) -> void:
 	emit_signal("error_received", message, reason_code)
-

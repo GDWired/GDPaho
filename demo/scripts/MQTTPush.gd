@@ -1,7 +1,7 @@
 extends PahoClient
 
 
-onready var _text_to_send : LineEdit = $Text
+@onready var _text_to_send : LineEdit = $Text
 
 
 func _ready():

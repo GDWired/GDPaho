@@ -1,24 +1,22 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=2 format=3 uid="uid://dons7x44t03xa"]
 
-[ext_resource path="res://scripts/MQTTPush.gd" type="Script" id=2]
+[ext_resource type="Script" path="res://scripts/MQTTPush.gd" id="2"]
 
 [node name="MQTTPush" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+anchors_preset = 10
 anchor_right = 1.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 0, 25 )
-script = ExtResource( 2 )
+offset_bottom = 25.0
+script = ExtResource("2")
 client_id = "MQTTPush"
 
 [node name="Publish" type="Button" parent="."]
-margin_right = 200.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 200, 25 )
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
 text = "Publish"
 
 [node name="Text" type="LineEdit" parent="."]
-margin_left = 204.0
-margin_right = 404.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 200, 25 )
+custom_minimum_size = Vector2(200, 25)
+layout_mode = 2
 
 [connection signal="pressed" from="Publish" to="." method="_on_Publish_pressed"]

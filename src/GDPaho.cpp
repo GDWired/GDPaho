@@ -2,7 +2,8 @@
 
 #include <mutex>
 
-#include <Godot.hpp>
+#include <godot_cpp/core/class_db.hpp>
+
 #include "PahoWrapper.hpp"
 
 using namespace godot;
@@ -25,52 +26,42 @@ GDPaho::~GDPaho() {
 //	Godot methods
 //###############################################################
 
-void GDPaho::_register_methods() {
+void GDPaho::_bind_methods() {
 	// Methods
-	register_method("loop", &GDPaho::loop);
-	register_method("initialise", &GDPaho::initialise);
-	register_method("username_pw_set", &GDPaho::username_pw_set);
-	register_method("is_connected_to_broker", &GDPaho::is_connected_to_broker);
-	register_method("broker_connect", &GDPaho::connect);
-	register_method("broker_reconnect", &GDPaho::reconnect);
-	register_method("broker_disconnect", &GDPaho::disconnect);
-	register_method("publish", &GDPaho::publish);
-	register_method("subscribe", &GDPaho::subscribe);
-	register_method("unsubscribe", &GDPaho::unsubscribe);
-	register_method("unsubscribe_wait", &GDPaho::unsubscribe_wait);
-	register_method("reason_code_string", &GDPaho::reason_code_string);
+	ClassDB::bind_method(D_METHOD("loop"), &GDPaho::loop);
+	ClassDB::bind_method(D_METHOD("initialise"), &GDPaho::initialise);
+	ClassDB::bind_method(D_METHOD("username_pw_set"), &GDPaho::username_pw_set);
+	ClassDB::bind_method(D_METHOD("is_connected_to_broker"), &GDPaho::is_connected_to_broker);
+	ClassDB::bind_method(D_METHOD("broker_connect"), &GDPaho::connect);
+	ClassDB::bind_method(D_METHOD("broker_reconnect"), &GDPaho::reconnect);
+	ClassDB::bind_method(D_METHOD("broker_disconnect"), &GDPaho::disconnect);
+	ClassDB::bind_method(D_METHOD("publish"), &GDPaho::publish);
+	ClassDB::bind_method(D_METHOD("subscribe"), &GDPaho::subscribe);
+	ClassDB::bind_method(D_METHOD("unsubscribe"), &GDPaho::unsubscribe);
+	ClassDB::bind_method(D_METHOD("unsubscribe_wait"), &GDPaho::unsubscribe_wait);
+	ClassDB::bind_method(D_METHOD("reason_code_string"), &GDPaho::reason_code_string);
 
 	// Signals
-	register_signal<GDPaho>("connected", 
-		"reason_code", GODOT_VARIANT_TYPE_INT
-	);
-	register_signal<GDPaho>("disconnected");
-	register_signal<GDPaho>("published", 
-		"message_id", GODOT_VARIANT_TYPE_INT
-	);
-	register_signal<GDPaho>("received", 
-		"topic", GODOT_VARIANT_TYPE_STRING,
-		"payload", GODOT_VARIANT_TYPE_STRING
-	);
-	register_signal<GDPaho>("subscribed", 
-		"message_id", GODOT_VARIANT_TYPE_INT,
-		"topic", GODOT_VARIANT_TYPE_STRING
-	);
-	register_signal<GDPaho>("unsubscribed", 
-		"message_id", GODOT_VARIANT_TYPE_INT,
-		"topic", GODOT_VARIANT_TYPE_STRING
-	);
-	register_signal<GDPaho>("log", 
-		"level", GODOT_VARIANT_TYPE_INT,
-		"message", GODOT_VARIANT_TYPE_STRING
-	);
-	register_signal<GDPaho>("error", 
-		"message", GODOT_VARIANT_TYPE_STRING,
-		"reason_code", GODOT_VARIANT_TYPE_INT
-	);
-}
-
-void GDPaho::_init() {
+	ADD_SIGNAL(MethodInfo("connected", 
+		PropertyInfo(Variant::INT, "reason_code")));
+	ADD_SIGNAL(MethodInfo("disconnected"));
+	ADD_SIGNAL(MethodInfo("published", 
+		PropertyInfo(Variant::INT, "message_id")));
+	ADD_SIGNAL(MethodInfo("received", 
+		PropertyInfo(Variant::STRING, "topic"), 
+		PropertyInfo(Variant::STRING, "payload")));
+	ADD_SIGNAL(MethodInfo("subscribed", 
+		PropertyInfo(Variant::INT, "message_id"), 
+		PropertyInfo(Variant::STRING, "topic")));
+	ADD_SIGNAL(MethodInfo("unsubscribed", 
+		PropertyInfo(Variant::INT, "message_id"), 
+		PropertyInfo(Variant::STRING, "topic")));
+	ADD_SIGNAL(MethodInfo("log", 
+		PropertyInfo(Variant::INT, "level"), 
+		PropertyInfo(Variant::STRING, "message")));
+	ADD_SIGNAL(MethodInfo("error", 
+		PropertyInfo(Variant::STRING, "message"), 
+		PropertyInfo(Variant::INT, "reason_code")));
 }
 
 void GDPaho::loop() {

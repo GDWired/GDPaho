@@ -1,3 +1,4 @@
+@tool
 ##
 # Plugin main
 # If you have any questions/remarks
@@ -5,11 +6,10 @@
 #	- jferdelyi@gmail.com
 ##
 
-tool
 extends EditorPlugin
 
 func _enter_tree():
-	add_autoload_singleton("GDPaho", "res://addons/GDPaho/GDPahoUtils.gd")
+	add_autoload_singleton("GDPahoUtils", "res://addons/GDPaho/GDPahoUtils.gd")
 
 func _exit_tree():
-	remove_autoload_singleton("GDPaho")
+	remove_autoload_singleton("GDPahoUtils")

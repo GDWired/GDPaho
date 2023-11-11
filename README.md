@@ -1,25 +1,38 @@
 <p align="center"><img src="https://user-images.githubusercontent.com/4105962/204161994-7b135944-4e3a-47af-8cf2-0c7a2b13701a.png" width="256"></p>
 
-# <p align="center">GDPaho (Godot 3.5)</p>
+# <p align="center">GDPaho (Godot 4.1)</p>
+
+Tested on macOS, Linux and Windows using cmake. Must work on Android but not tested.
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
-Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/3.5/development/compiling/index.html.
+Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/4.1/development/compiling/index.html.
 
 Dependencies:
- - Godot build dependencies (https://docs.godotengine.org/en/3.5/development/compiling/index.html)
+ - Godot build dependencies (https://docs.godotengine.org/en/4.1/development/compiling/index.html)
  - OpenSSL
    - Windows (https://slproweb.com/products/Win32OpenSSL.html)
    - Linux `apt install libssl-dev` or equivalent
    - macOS `brew install openssl@3`
  - Paho lib (see specific section below)
+ - cmake
+   - Windows (https://cmake.org/download) or maybe using Visual Studio Installer
+   - Linux `apt install cmake` or equivalent
+   - macOS `brew install cmake`
+ - git
+   - Windows (https://git-scm.com/downloads)
+   - Linux `apt install git` or equivalent
+   - macOS `brew install git`
 
-To compile it:
- - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
- - Compile (on the root folder)
-   - Windows `scons target=release paho_cpp="C:\Program Files (x86)\paho-mqtt-cpp\lib" paho_c="C:\Program Files (x86)\Eclipse Paho C\lib" ssl="C:\Program Files\OpenSSL-Win64\lib\VC\static"`
-   - Others `scons target=release` 
- 
+The editor uses the debug version, but if you want to export your project as a release, you have to compile everything as a release as well:
+ - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git -b godot-4`
+
+Compile everything in release and copy libs to the demo folder ready to use by Godot4.
+```cmake
+cmake -DBUILD_FOR_EDITOR=True . -B build
+cmake --build build
+```
+
 ## Paho build
 
 Should be done in root
@@ -28,31 +41,27 @@ Should be done in root
 ```console
 git clone https://github.com/eclipse/paho.mqtt.c.git
 cd paho.mqtt.c
-mkdir build
-cd build
-[macOS] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-[Windows] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-[Linux] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-cmake --build . --target install --config "MinSizeRel"
+[macOS] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+[Windows] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+[Linux] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_HIGH_PERFORMANCE=TRUE -DPAHO_WITH_SSL=TRUE -DPAHO_ENABLE_TESTING=FALSE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+cmake --build build --target install --config "MinSizeRel"
 ```
 
 **paho.cpp**
 ```console
 git clone https://github.com/eclipse/paho.mqtt.cpp.git
 cd paho.mqtt.cpp
-mkdir build
-cd build
-[macOS] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-[Windows] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DPAHO_MQTT_C_LIBRARIES="C:\Program Files (x86)\Eclipse Paho C\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-[Linux] cmake .. -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-cmake --build . --target install --config "MinSizeRel"
+[macOS] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+[Windows] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DPAHO_MQTT_C_LIBRARIES="C:\Program Files (x86)\Eclipse Paho C\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+[Linux] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+cmake --build build --target install --config "MinSizeRel"
 ```
 
 ## Demo
 
-In the "demo" folder there is a sample project, after compiling the project you can open it with Godot 3.5.1. (You can also download a precompiled version of the plugin from the asset store or in the release section of github WIP)
+In the "demo" folder there is a sample project, after compiling the project you can open it with Godot1 4.1. (WIP you can also download a precompiled version of the plugin from the asset store or in the release section of github WIP)
 
-<img width="1136" alt="Capture d’écran 2022-10-27 à 15 27 05" src="https://user-images.githubusercontent.com/4105962/198297381-d3eea888-d09f-4532-a38c-585850918de8.png">
+<img width="1264" alt="Capture d’écran 2023-11-03 à 23 03 35" src="https://github.com/GDWired/GDPaho/assets/4105962/6c65e9e1-abcc-44d4-af39-d0c06b554a0a">
 
 The picture represent the demo project:
  - The first line is the subscription parameters, subscribe to the SIN topic and expect JSON formatted data like [t,sin(t)] and plot it.
