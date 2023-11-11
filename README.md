@@ -2,14 +2,7 @@
 
 # <p align="center">GDPaho (Godot 4.1)</p>
 
-WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
-
-Tested on macOS, Linux and Windows using cmake. For macOS and Linux it seems ok but not on Windows.
-
-UTF8 encoding does not work as expected :/
-
-WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP WIP
-
+Tested on macOS, Linux and Windows using cmake. Must work on Android but not tested.
 
 A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
 
