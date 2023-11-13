@@ -60,7 +60,7 @@ cmake --build build --target install --config "MinSizeRel"
 
 ## Demo
 
-In the "demo" folder there is a sample project, after compiling the project you can open it with Godot1 4.1. (WIP you can also download a precompiled version of the plugin from the asset store or in the release section of github WIP)
+In the "demo" folder there is a sample project, after compiling the project you can open it with Godot1 4.1. (you can also download a precompiled version of the plugin from the asset store or in the release section of github)
 
 <img width="1264" alt="Capture d’écran 2023-11-03 à 23 03 35" src="https://github.com/GDWired/GDPaho/assets/4105962/6c65e9e1-abcc-44d4-af39-d0c06b554a0a">
 
