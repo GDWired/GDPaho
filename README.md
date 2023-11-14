@@ -2,12 +2,10 @@
 
 # <p align="center">GDPaho (Godot 4.1 & 3.5)</p>
 
+A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired). Not all features are exposed.
+
 Tested on macOS (Universal), Linux(x86_64) and Windows(x86_64) using cmake. Must work on Android but not tested.
-Branch godot-3 (for Godot 3.X developments) will be maintained bug corrections only, no new features.
-
-A wrapping of paho cpp (https://www.eclipse.org/paho/) able to make MQTT clients in Godot, is a part of GDWired (https://github.com/GDWired).
-
-Works on Windows, macOS and Linux but there are only few functions exposed. The Godot build dependencies must be installed first, you can find everything about it here https://docs.godotengine.org/en/4.1/development/compiling/index.html.
+Branch godot-3 (for Godot 3.X developments) will be maintained for bug corrections only, no new features.
 
 Dependencies:
  - Godot build dependencies (https://docs.godotengine.org/en/4.1/development/compiling/index.html)
