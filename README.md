@@ -51,7 +51,7 @@ cmake --build build --target install --config "MinSizeRel"
 git clone https://github.com/eclipse/paho.mqtt.cpp.git
 cd paho.mqtt.cpp
 [macOS] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
-[Windows] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DPAHO_MQTT_C_LIBRARIES="C:\Program Files (x86)\Eclipse Paho C\lib" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
+[Windows] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DOPENSSL_ROOT_DIR="C:\Program Files\OpenSSL-Win64" -DPAHO_MQTT_C_INCLUDE_DIRS="C:\Program Files (x86)\Eclipse Paho C\include" -DPAHO_MQTT_C_LIBRARIES="C:\Program Files (x86)\Eclipse Paho C\lib" -DCMAKE_PREFIX_PATH="C:\Program Files (x86)\Eclipse Paho C\lib\cmake" -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
 [Linux] cmake . -DPAHO_BUILD_SHARED=FALSE -DPAHO_BUILD_STATIC=TRUE -DPAHO_WITH_SSL=TRUE -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -B build
 cmake --build build --target install --config "MinSizeRel"
 ```
