@@ -24,7 +24,7 @@ Dependencies:
    - macOS `brew install git`
 
 The editor uses the debug version, but if you want to export your project as a release, you have to compile everything as a release as well:
- - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git -b godot-4`
+ - Run `git clone --recurse-submodules https://github.com/GDWired/GDPaho.git`
 
 Compile everything in release and copy libs to the demo folder ready to use by Godot4.
 ```cmake
