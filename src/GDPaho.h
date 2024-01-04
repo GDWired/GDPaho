@@ -110,6 +110,14 @@ namespace godot {
 			/**
 			 * Create a new paho client instance
 			 * @param p_id string to use as the client id. If NULL, a random client id will be generated. If id is NULL, clean_session must be true
+			 * @param p_full_address the full connection address
+			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
+		 	 */
+			int initialise_full_address(const String p_id, const String p_full_address);
+
+			/**
+			 * Create a new paho client instance
+			 * @param p_id string to use as the client id. If NULL, a random client id will be generated. If id is NULL, clean_session must be true
 			 * @param p_host the hostname or ip address of the broker to connect to
 			 * @param p_port the network port to connect to. Usually 1883
 			 * @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)

@@ -15,8 +15,10 @@ signal error_received(message, reason_code)
 
 @export var client_id: String = "MQTTClient" 
 @export var clean_session: bool = true 
+@export var protocol: String = "tcp"
 @export var broker_address: String = "localhost"
 @export var broker_port: int = 1883
+@export var broker_address_end: String = ""
 @export var broker_keep_alive: int = 60
 @export var username: String = ""
 @export var password: String = ""
@@ -35,7 +37,7 @@ func initialise() -> void:
 	_mqtt_client.connect("log", Callable(self, "_on_MQTTClient_log"))
 	_mqtt_client.connect("error", Callable(self, "_on_MQTTClient_error"))
 	
-	var rc_initialise: int = _mqtt_client.initialise(client_id, broker_address, str(broker_port))
+	var rc_initialise: int = _mqtt_client.initialise_full_address(client_id, protocol + "://" + broker_address + ":" + str(broker_port) + "/" + broker_address_end)
 	var rc = rc_initialise
 	if not rc_initialise:
 		if username != "" and password != "":

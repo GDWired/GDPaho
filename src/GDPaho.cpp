@@ -29,6 +29,7 @@ GDPaho::~GDPaho() {
 void GDPaho::_bind_methods() {
 	// Methods
 	ClassDB::bind_method(D_METHOD("loop"), &GDPaho::loop);
+	ClassDB::bind_method(D_METHOD("initialise_full_address"), &GDPaho::initialise_full_address);
 	ClassDB::bind_method(D_METHOD("initialise"), &GDPaho::initialise);
 	ClassDB::bind_method(D_METHOD("username_pw_set"), &GDPaho::username_pw_set);
 	ClassDB::bind_method(D_METHOD("is_connected_to_broker"), &GDPaho::is_connected_to_broker);
@@ -112,14 +113,18 @@ void GDPaho::loop() {
 //	Wrapped methods
 //###############################################################
 
-int GDPaho::initialise(const String p_id, const String p_host, const String p_port) {
+int GDPaho::initialise_full_address(const String p_id, const String p_full_address) {
 	try {
-		String m_connection_address = "tcp://" + p_host + ":" + p_port;
+		String m_connection_address = p_full_address;
 		m_wrapper = new PahoWrapper(*this, p_id.utf8().get_data(), m_connection_address.utf8().get_data());
 		return mqtt::ReasonCode::SUCCESS;
 	} catch (std::exception& p_exception) {
 		return atoi(p_exception.what());
 	}
+}
+
+int GDPaho::initialise(const String p_id, const String p_host, const String p_port) {
+	return initialise_full_address(p_id, "tcp://" + p_host + ":" + p_port);
 }
 
 int GDPaho::username_pw_set(const String p_username, const String p_password) {
