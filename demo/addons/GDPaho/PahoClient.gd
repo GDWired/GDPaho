@@ -12,14 +12,13 @@ signal unsubscribed(message_id, topic)
 signal log_received(level, message)
 signal error_received(message, reason_code)
 
-
 @export var client_id: String = "MQTTClient" 
 @export var clean_session: bool = true 
-@export var broker_protocol: String = "tcp"
-@export var broker_address: String = "localhost"
-@export var broker_port: int = 1883
-@export var broker_address_end: String = ""
-@export var broker_keep_alive: int = 60
+@export var protocol: String = "tcp"
+@export var address: String = "localhost"
+@export var port: int = 1883
+@export var subdir: String = ""
+@export var keep_alive: int = 60
 @export var username: String = ""
 @export var password: String = ""
 
@@ -37,14 +36,14 @@ func initialise() -> void:
 	_mqtt_client.connect("log", Callable(self, "_on_MQTTClient_log"))
 	_mqtt_client.connect("error", Callable(self, "_on_MQTTClient_error"))
 	
-	var rc_initialise: int = _mqtt_client.initialise_full_address(client_id, broker_protocol + "://" + broker_address + ":" + str(broker_port) + "/" + broker_address_end)
+	var rc_initialise: int = _mqtt_client.initialise_full_address(client_id, protocol + "://" + address + ":" + str(port) + "/" + subdir)
 	var rc = rc_initialise
 	if not rc_initialise:
 		if username != "" and password != "":
 			var rc_username_pwt: int = _mqtt_client.username_pw_set(username, password)
 			if rc_username_pwt:
 				printerr("[" + client_id + "] error during connect, " + _mqtt_client.reason_code_string(rc_username_pwt))
-		var rc_connect: int = _mqtt_client.broker_connect(clean_session, broker_keep_alive)
+		var rc_connect: int = _mqtt_client.broker_connect(clean_session, keep_alive)
 		rc = rc + rc_connect
 		if rc_connect:
 			printerr("[" + client_id + "] error during connect, " + _mqtt_client.reason_code_string(rc_connect))
@@ -64,11 +63,11 @@ func reason_code_string(rc: int) -> String:
 	return _mqtt_client.reason_code_string(rc)
 
 
-func broker_connect(new_clean_session: bool = false, new_broker_keep_alive: int = 60) -> int:
-	var rc_connect: int = _mqtt_client.broker_connect(new_clean_session, new_broker_keep_alive)
+func broker_connect(new_clean_session: bool = false, new_keep_alive: int = 60) -> int:
+	var rc_connect: int = _mqtt_client.broker_connect(new_clean_session, new_keep_alive)
 	if not rc_connect:
 		clean_session = new_clean_session
-		broker_keep_alive = new_broker_keep_alive
+		keep_alive = new_keep_alive
 	return rc_connect
 
 
