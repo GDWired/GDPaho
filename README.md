@@ -72,6 +72,12 @@ The picture represent the demo project:
 ``` gdscript
 # Initialize the client
 # @param id string to use as the client id
+# @param full_address the full connection address
+# @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
+initialise_full_adress(id: String, full_address: String) -> int
+
+# Initialize the client
+# @param id string to use as the client id
 # @param host the broker address
 # @param port the broker port
 # @return the reason code, if something wrong happen. 0 = OK (see https://docs.oasis-open.org/mqtt/mqtt/v5.0/os/mqtt-v5.0-os.html#_Toc3901031)
