@@ -9,7 +9,7 @@ Works on Windows, macOS and Linux but there are only few functions exposed. The 
 Dependencies:
  - Godot build dependencies (https://docs.godotengine.org/en/3.5/development/compiling/index.html)
  - OpenSSL
-   - Windows (https://slproweb.com/products/Win32OpenSSL.html)
+   - Windows Win64 OpenSSL v3.3.1, not the light version (https://slproweb.com/products/Win32OpenSSL.html)
    - Linux `apt install libssl-dev` or equivalent
    - macOS `brew install openssl@3`
  - Paho lib (see specific section below)

@@ -10,8 +10,8 @@ env.Append(CPPPATH=['src/'])
 sources = Glob('src/*.cpp')
 env.Append(CPPPATH=["include"])
 if env['platform'] == "windows":
-    env.Append(LIBPATH=["{}".format("C:\Program Files\OpenSSL-Win64\lib\VC\static")])
-    env.Append(LIBS=["paho-mqtt3as-static.lib", "paho-mqttpp3-static.lib", "libcrypto64MD.lib", "libssl64MD.lib", "ws2_32.lib", "Advapi32.lib", "User32.lib"])
+    env.Append(LIBPATH=["{}".format("C:/Program Files/OpenSSL-Win64/lib/VC/x64/MD")])
+    env.Append(LIBS=["paho-mqtt3as-static.lib", "paho-mqttpp3-static.lib", "libcrypto_static.lib", "libssl_static.lib", "ws2_32.lib", "Advapi32.lib", "User32.lib"])
     env.Append(LIBPATH=["{}".format("C:/Program Files (x86)/Eclipse Paho C/lib")])
     env.Append(LIBPATH=["{}".format("C:/Program Files (x86)/PahoMqttCpp/lib")])
 if env['platform'] == "osx":
