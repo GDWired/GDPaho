@@ -6,14 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
- * Copyright (c) 2013-2020 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2013-2023 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -38,9 +38,9 @@ namespace mqtt {
 class client : private callback
 {
 	/** An arbitrary, but relatively long timeout */
-	static const std::chrono::seconds DFLT_TIMEOUT;
+	PAHO_MQTTPP_EXPORT static const std::chrono::seconds DFLT_TIMEOUT;
 	/** The default quality of service */
-	static constexpr int DFLT_QOS = 1;
+	PAHO_MQTTPP_EXPORT static const int DFLT_QOS;  // =1;
 
 	/** The actual client */
 	async_client cli_;
@@ -231,7 +231,7 @@ public:
 	 */
 	virtual topic get_topic(const string& top, int qos=message::DFLT_QOS,
 							bool retained=message::DFLT_RETAINED) {
-		return topic(cli_, top);
+		return topic(cli_, top, qos, retained);
 	}
 	/**
 	 * Determines if this client is currently connected to the server.
@@ -377,26 +377,26 @@ public:
 	 * This initializes the client to receive messages through a queue that
 	 * can be read synchronously.
 	 */
-	void start_consuming() { cli_.start_consuming(); }
+	virtual void start_consuming() { cli_.start_consuming(); }
 	/**
 	 * Stop consuming messages.
 	 * This shuts down the internal callback and discards any unread
 	 * messages.
 	 */
-	void stop_consuming() { cli_.stop_consuming(); }
+	virtual void stop_consuming() { cli_.stop_consuming(); }
 	/**
 	 * Read the next message from the queue.
 	 * This blocks until a new message arrives.
 	 * @return The message and topic.
 	 */
-	const_message_ptr consume_message() { return cli_.consume_message(); }
+	virtual const_message_ptr consume_message() { return cli_.consume_message(); }
 	/**
 	 * Try to read the next message from the queue without blocking.
 	 * @param msg Pointer to the value to receive the message
 	 * @return @em true is a message was read, @em false if no message was
 	 *  	   available.
 	 */
-	bool try_consume_message(const_message_ptr* msg) {
+	virtual bool try_consume_message(const_message_ptr* msg) {
 		return cli_.try_consume_message(msg);
 	}
 	/**

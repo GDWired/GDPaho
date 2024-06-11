@@ -6,14 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
- * Copyright (c) 2019 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2019-2023 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -27,6 +27,7 @@
 #include "MQTTAsync.h"
 #include "MQTTSubscribeOpts.h"
 #include "mqtt/types.h"
+#include "mqtt/platform.h"
 
 namespace mqtt {
 
@@ -53,17 +54,17 @@ public:
 	using const_ptr_t = std::shared_ptr<const subscribe_options>;
 
 	/** Don't receive our own publications */
-	static constexpr bool SUBSCRIBE_NO_LOCAL = true;
+	PAHO_MQTTPP_EXPORT static const bool SUBSCRIBE_NO_LOCAL;  // =true;
 	/** Receive our own publications */
-	static constexpr bool SUBSCRIBE_LOCAL = false;
+	PAHO_MQTTPP_EXPORT static const bool SUBSCRIBE_LOCAL;  // =false;
 
 	/**
 	 * Retain flag is only set on publications sent by a broker if in
 	 * response to a subscribe request
 	 */
-	static constexpr bool NO_RETAIN_AS_PUBLISHED = false;
+	PAHO_MQTTPP_EXPORT static const bool NO_RETAIN_AS_PUBLISHED;  // =false;
 	/** Keep the retain flag as on the original publish message */
-	static constexpr bool RETAIN_AS_PUBLISHED = true;
+	PAHO_MQTTPP_EXPORT static const bool RETAIN_AS_PUBLISHED;  // =true;
 
 	/** The options for subscription retain handling */
 	enum RetainHandling {
@@ -135,7 +136,7 @@ public:
 		opts_.retainAsPublished = on ? 1 : 0;
 	}
 	/**
-	 * Gets the "retasin handling" option.
+	 * Gets the "retain handling" option.
 	 * @return When to send retained messages:
 	 *  	@li (SEND_RETAINED_ON_SUBSCRIBE, 0) At the time of the subscribe
 	 *  	@li (SEND_RETAINED_ON_NEW, 1) Only at the time of a new

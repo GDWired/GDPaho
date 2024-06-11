@@ -6,14 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
- * Copyright (c) 2020 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2020-2023 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -55,9 +55,9 @@ public:
 	/**
 	 * Default set of client create options.
 	 */
-	create_options() : opts_(DFLT_C_STRUCT) {}
+	create_options();
 	/**
-	 * Default create optionsfor the specified version of MQTT.
+	 * Default create options for the specified version of MQTT.
 	 * @param mqttVersion The MQTT version used to create the client.
 	 */
 	explicit create_options(int mqttVersion);
@@ -112,7 +112,7 @@ public:
 	 * Sets the MQTT version used to create the client.
 	 * @param ver The MQTT version used to create the client.
 	 */
-	void set_mqtt_verison(int ver) { opts_.MQTTVersion = ver; }
+	void set_mqtt_version(int ver) { opts_.MQTTVersion = ver; }
 	/**
 	 * Whether the oldest messages are deleted when the output buffer is
 	 * full.
@@ -160,7 +160,7 @@ public:
 		return to_bool(opts_.persistQoS0);
 	}
 	/**
-	 * Determeine whether to persist QoS 0 messages.
+	 * Determine whether to persist QoS 0 messages.
 	 *
 	 * @param on @em true if QoS 0 messages are persisted, @em false if not.
 	 */
@@ -235,10 +235,10 @@ public:
 		return *this;
 	}
 	/**
-	 * Determines whether to restore persisted messsages or clear the
+	 * Determines whether to restore persisted messages or clear the
 	 * persistence store. (Defaults true)
 	 *
-	 * @param on @em true to retore persisted messages, @em false to clear
+	 * @param on @em true to restore persisted messages, @em false to clear
 	 *  		 the persistence store.
 	 * @return A reference to this object.
 	 */

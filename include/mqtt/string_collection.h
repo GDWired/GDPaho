@@ -9,11 +9,11 @@
  * Copyright (c) 2017 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -35,27 +35,38 @@ namespace mqtt {
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Type for a collection of topics.
- * This acts like a collection of strings but carries an array of pointers
- * to the C strings for easy interactions with the Paho C library.
+ * Type for a collection of strings, such as MQTT topics.
+ *
+ * This acts like a standard collection of strings but carries an array of
+ * pointers to the C strings for easy interactions with the Paho C library.
  */
 class string_collection
 {
+public:
 	/** The type for the collection of strings */
 	using collection_type = std::vector<string>;
+	/** Iterator over const items */
+	using const_iterator = collection_type::const_iterator;
+
+	/** Smart/shared pointer to an object of this type */
+	using ptr_t = std::shared_ptr<string_collection>;
+	/** Smart/shared pointer to a const object of this type */
+	using const_ptr_t = std::shared_ptr<const string_collection>;
+
+private:
 	/** The type for the array of C pointers */
 	using c_arr_type = std::vector<const char*>;
 
 	/**
-	 * The collection of strings for the topics.
+	 * The collection of strings.
 	 */
 	collection_type coll_;
 	/**
-	 * A colleciton of pointers to NUL-terminated C strings for the topics.
+	 * A collection of pointers to NUL-terminated C strings.
 	 * This is what is required by the Paho C library, and thus the lifetime
 	 * of the pointers will remain consistent with the lifetime of the
-	 * object. The value is kept consistent with the current topics and
-	 * updated whenever topics are added or removed.
+	 * object. The value is kept consistent with the current stringss and
+	 * updated whenever strings are added or removed.
 	 */
 	c_arr_type cArr_;
 	/**
@@ -66,11 +77,6 @@ class string_collection
 	void update_c_arr();
 
 public:
-	/** Smart/shared pointer to an object of this type */
-	using ptr_t = std::shared_ptr<string_collection>;
-	/** Smart/shared pointer to a const object of this type */
-	using const_ptr_t = std::shared_ptr<const string_collection>;
-
 	/**
 	 * Construct an empty string collection.
 	 */
@@ -104,7 +110,7 @@ public:
 	 * Move constructor.
 	 * @param coll An existing string collection.
 	 */
-	string_collection(string_collection&& coll) = default;
+	string_collection(string_collection&& coll) =default;
 	/**
 	 * Construct a string collection from an initialization list of strings.
 	 * @param sl An initialization list of strings.
@@ -180,7 +186,27 @@ public:
 	 * @param coll A string collection
 	 * @return A reference to this collection.
 	 */
-	string_collection& operator=(string_collection&& coll) = default;
+	string_collection& operator=(string_collection&& coll) =default;
+	/**
+	 * Gets a const iterator to the begining of the collecion.
+	 * @return A const iterator to the begining of the collecion.
+	 */
+	const_iterator begin() const { return coll_.begin(); }
+	/**
+	 * Gets a const iterator to the end of the collecion.
+	 * @return A const iterator to the end of the collecion.
+	 */
+	const_iterator end() const { return coll_.end(); }
+	/**
+	 * Gets a const iterator to the begining of the collecion.
+	 * @return A const iterator to the begining of the collecion.
+	 */
+	const_iterator cbegin() const { return coll_.cbegin(); }
+	/**
+	 * Gets a const iterator to the end of the collecion.
+	 * @return A const iterator to the end of the collecion.
+	 */
+	const_iterator cend() const { return coll_.cend(); }
 	/**
 	 * Determines if the collection is empty.
 	 * @return @em true if the collection is empty, @em false if not.
@@ -192,12 +218,12 @@ public:
 	 */
 	size_t size() const { return coll_.size(); }
 	/**
-	 * Copies a string to the back of the collection.
+	 * Copies a string onto the back of the collection.
 	 * @param str A string.
 	 */
 	void push_back(const string& str);
 	/**
-	 * Moves a string to the back of the collection.
+	 * Moves a string onto the back of the collection.
 	 * @param str A string.
 	 */
 	void push_back(string&& str);
@@ -219,7 +245,7 @@ public:
 	 * modified, so the application should not cache the return value, but
 	 * rather request the value when needed.
 	 * @return pointer to an array of NUL-terminated C string pointers of
-	 *  	   the topics in the object.
+	 *  	   the C++ strings in the object.
 	 *
 	 */
 	char* const* c_arr() const { return (char* const *) cArr_.data(); }
@@ -227,7 +253,7 @@ public:
 
 /////////////////////////////////////////////////////////////////////////////
 
-/** Smart/shared pointer to a topic collection */
+/** Smart/shared pointer to a string collection */
 using string_collection_ptr = string_collection::ptr_t;
 
 /** Smart/shared pointer to a const string_collection */
@@ -268,7 +294,7 @@ public:
 	/** The type of the string/string pair of values */
 	using value_type = collection_type::value_type;
     /**
-     * Default construtor for an empty collection.
+     * Default constructor for an empty collection.
      */
     name_value_collection() =default;
     /**
@@ -297,7 +323,7 @@ public:
      * Move constructor.
      * @param other Another collection of name/value pairs
      */
-    name_value_collection(name_value_collection&& other) = default;
+    name_value_collection(name_value_collection&& other) =default;
 	/**
 	 * Constructs the collection with an initializer list.
 	 *
@@ -324,7 +350,7 @@ public:
      * Move constructor.
      * @param other Another collection of name/value pairs
      */
-    name_value_collection& operator=(name_value_collection&& other) = default;
+    name_value_collection& operator=(name_value_collection&& other) =default;
 	/**
 	 * Determines if the collection is empty.
 	 * @return @em true if the container is empty, @em false if it contains

@@ -6,14 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
- * Copyright (c) 2013-2020 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2013-2022 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -54,25 +54,55 @@ namespace mqtt {
 
 #if defined(PAHO_MQTTPP_VERSIONS)
 	/** The version number for the client library. */
-	const uint32_t PAHO_MQTTPP_VERSION = 0x01020000;
+	const uint32_t PAHO_MQTTPP_VERSION = 0x01030001;
 	/** The version string for the client library  */
-	const string PAHO_MQTTPP_VERSION_STR("Paho MQTT C++ (mqttpp) v. 1.2");
+	const string PAHO_MQTTPP_VERSION_STR("Paho MQTT C++ (mqttpp) v. 1.3.1");
 	/** Copyright notice for the client library */
-	const string PAHO_MQTTPP_COPYRIGHT("Copyright (c) 2013-2020 Frank Pagliughi");
+	const string PAHO_MQTTPP_COPYRIGHT("Copyright (c) 2013-2023 Frank Pagliughi");
 #else
 	/** The version number for the client library. */
-	const uint32_t VERSION = 0x01020000;
+	const uint32_t VERSION = 0x01030001;
 	/** The version string for the client library  */
-	const string VERSION_STR("Paho MQTT C++ (mqttpp) v. 1.2");
+	const string VERSION_STR("Paho MQTT C++ (mqttpp) v. 1.3.1");
 	/** Copyright notice for the client library */
-	const string COPYRIGHT("Copyright (c) 2013-2020 Frank Pagliughi");
+	const string COPYRIGHT("Copyright (c) 2013-2023 Frank Pagliughi");
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 
 /**
- * Lightweight client for talking to an MQTT server using non-blocking
+ * Client for talking to an MQTT server using non-blocking
  * methods that allow an operation to run in the background.
+ *
+ * The location of the server is specified as a URI string with the
+ * following schemas supported to specify the type and security used for the
+ * connection:
+ * @li @em "mqtt://" - A standard (insecure) connection over TCP. (Also,
+ * "tcp://")
+ * @li @em "mqtts://" - A secure connection using SSL/TLS sockets. (Also
+ * "ssl://")
+ * @li @em "ws://" - A standard (insecure) WebSocket connection.
+ * @li @em "wss:// - A secure websocket connection using SSL/TLS.
+ *
+ * The secure connection types assume that the library was built with
+ * OpenSSL support, otherwise requesting a secure conection will result in
+ * an error.
+ *
+ * The communication methods of this class - `connect()`, `publish()`,
+ * `subscribe()`, etc. - are all asynchronous. They create the request for
+ * the server, but return imediately, before a response is received back
+ * from the server.
+ *
+ * These methods return a `Token` to the caller which is akin to a C++
+ * std::future. The caller can keep the Token, then use it later to block
+ * until the asynchronous operation is complete and retrieve the result of
+ * the operation, including any response from the server.
+ *
+ * Alternately, the application can choose to set callbacks to be fired when
+ * each operation completes. This can be used to create an event-driven
+ * architecture, but is more complex in that it forces the user to avoid any
+ * blocking operations and manually handle thread synchronization (since
+ * the callbacks run in a separate thread managed by the library).
  */
 class async_client : public virtual iasync_client
 {
@@ -121,6 +151,8 @@ private:
 	update_connection_handler updateConnectionHandler_;
 	/** Message handler */
 	message_handler msgHandler_;
+  /** Cached options from the last connect */
+  connect_options connOpts_;
 	/** Copy of connect token (for re-connects) */
 	token_ptr connTok_;
 	/** A list of tokens that are in play */
@@ -464,6 +496,16 @@ public:
 	 * @return The server's address, as a URI String.
 	 */
 	string get_server_uri() const override { return serverURI_; }
+   	/**
+   	 * Gets the MQTT version used by the client.
+	 * @return The MQTT version used by the client
+	 *   @li MQTTVERSION_DEFAULT (0) = default: start with 3.1.1, and if
+	 *       that fails, fall back to 3.1
+	 *   @li MQTTVERSION_3_1 (3) = only try version 3.1
+	 *   @li MQTTVERSION_3_1_1 (4) = only try version 3.1.1
+	 *   @li MQTTVERSION_5 (5) = only try version 5
+   	 */
+	int mqtt_version() const noexcept { return mqttVersion_; }
 	/**
 	 * Determines if this client is currently connected to the server.
 	 * @return true if connected, false otherwise.
@@ -687,26 +729,26 @@ public:
 	 * This initializes the client to receive messages through a queue that
 	 * can be read synchronously.
 	 */
-	void start_consuming();
+	void start_consuming() override;
 	/**
 	 * Stop consuming messages.
 	 * This shuts down the internal callback and discards any unread
 	 * messages.
 	 */
-	void stop_consuming();
+	void stop_consuming() override;
 	/**
 	 * Read the next message from the queue.
 	 * This blocks until a new message arrives.
 	 * @return The message and topic.
 	 */
-	const_message_ptr consume_message() { return que_->get(); }
+	const_message_ptr consume_message() override { return que_->get(); }
 	/**
 	 * Try to read the next message from the queue without blocking.
 	 * @param msg Pointer to the value to receive the message
 	 * @return @em true is a message was read, @em false if no message was
 	 *  	   available.
 	 */
-	bool try_consume_message(const_message_ptr* msg) {
+	bool try_consume_message(const_message_ptr* msg) override {
 		return que_->try_get(msg);
 	}
 	/**
@@ -753,10 +795,9 @@ public:
 	template <class Clock, class Duration>
 	const_message_ptr try_consume_message_until(const std::chrono::time_point<Clock,Duration>& absTime) {
 		const_message_ptr msg;
-		que_->try_get_until(msg, absTime);
+		que_->try_get_until(&msg, absTime);
 		return msg;
 	}
-
 };
 
 /** Smart/shared pointer to an asynchronous MQTT client object */

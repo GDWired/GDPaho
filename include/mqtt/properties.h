@@ -6,14 +6,14 @@
 /////////////////////////////////////////////////////////////////////////////
 
 /*******************************************************************************
- * Copyright (c) 2019 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2019-2023 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -31,6 +31,7 @@ extern "C" {
 #include "mqtt/types.h"
 #include "mqtt/buffer_ref.h"
 #include "mqtt/exception.h"
+#include "mqtt/platform.h"
 #include <tuple>
 #include <initializer_list>
 
@@ -167,8 +168,8 @@ public:
 };
 
 /**
- * Extracts the value from the property as the specitied type.
- * @return The value from the property as the specitied type.
+ * Extracts the value from the property as the specified type.
+ * @return The value from the property as the specified type.
  */
 template <typename T>
 inline T get(const property&) { throw bad_cast(); }
@@ -253,6 +254,9 @@ inline string_pair get<string_pair>(const property& prop) {
  */
 class properties
 {
+	/** The default C struct */
+	PAHO_MQTTPP_EXPORT static const MQTTProperties DFLT_C_STRUCT;
+
 	/** The underlying C properties struct  */
 	MQTTProperties props_;
 
@@ -267,9 +271,7 @@ public:
 	 * Default constructor.
 	 * Creates an empty properties list.
 	 */
-	properties() {
-		std::memset(&props_, 0, sizeof(MQTTProperties));
-	}
+	properties();
 	/**
 	 * Copy constructor.
 	 * @param other The property list to copy.
@@ -309,26 +311,13 @@ public:
 	 * @param rhs The other property list to copy into this one
 	 * @return A reference to this object.
 	 */
-	properties& operator=(const properties& rhs) {
-		if (&rhs != this) {
-			::MQTTProperties_free(&props_);
-			props_ = ::MQTTProperties_copy(&rhs.props_);
-		}
-		return *this;
-	}
+	properties& operator=(const properties& rhs);
 	/**
 	 * Move assignment.
 	 * @param rhs The property list to move to this one.
 	 * @return A reference to this object.
 	 */
-	properties& operator=(properties&& rhs) {
-		if (&rhs != this) {
-			::MQTTProperties_free(&props_);
-			props_ = rhs.props_;
-			std::memset(&rhs.props_, 0, sizeof(MQTTProperties));
-		}
-		return *this;
-	}
+	properties& operator=(properties&& rhs);
 	/**
 	 * Determines if the property list is empty.
 	 * @return @em true if there are no properties in the list, @em false if
@@ -341,19 +330,6 @@ public:
 	 */
 	size_t size() const { return size_t(props_.count); }
 	/**
-	 * Gets the number of bytes required for the serialized
-	 * structure on the wire.
-	 * @return The number of bytes required for the serialized
-	 *  	   struct.
-	 */
-    #if 0
-    // Note: This isn't exported by the shared library. Perhaps we can change
-    // that in the upstream C lib.
-	size_t byte_length() const {
-		return (size_t) ::MQTTProperties_len(const_cast<MQTTProperties*>(&props_));
-	}
-    #endif
-	/**
 	 * Adds a property to the list.
 	 * @param prop The property to add to the list.
 	 */
@@ -363,7 +339,9 @@ public:
 	/**
 	 * Removes all the items from the property list.
 	 */
-	void clear();
+	void clear() {
+		::MQTTProperties_free(&props_);
+	}
 	/**
 	 * Determines if the list contains a specific property.
 	 * @param propid The property ID (code).
@@ -402,7 +380,7 @@ public:
 
 /**
  * Retrieves a single value from a property list for when there may be
- * multiple identical propert ID's.
+ * multiple identical property ID's.
  * @tparam T The type of the value to retrieve
  * @param props The property list
  * @param propid The property ID code for the desired value.

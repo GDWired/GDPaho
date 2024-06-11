@@ -8,11 +8,11 @@
  * Copyright (c) 2015-2017 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -39,7 +39,7 @@ using byte = uint8_t;
 /** An mqtt string is just a std::string */
 using string = std::string;
 /** A binary blob of data is, umm, just a string too! */
-using binary = std::string;		//std::basic_string<byte>;
+using binary = std::string;
 
 /** Smart/shared pointer to a const string */
 using string_ptr = std::shared_ptr<const string>;
@@ -100,7 +100,7 @@ enum ReasonCode {
     MAXIMUM_CONNECT_TIME = 160,
     SUBSCRIPTION_IDENTIFIERS_NOT_SUPPORTED = 161,
     WILDCARD_SUBSCRIPTIONS_NOT_SUPPORTED = 162,
-	MQTTPP_V3_CODE = 255	// This is not a protocol code; used internally by the library
+    MQTTPP_V3_CODE = 255	// This is not a protocol code; used internally by the library
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -7,14 +7,14 @@
 
 /*******************************************************************************
  * Copyright (c) 2016 Guilherme M. Ferreira <guilherme.maciel.ferreira@gmail.com>
- * Copyright (c) 2016-2019 Frank Pagliughi <fpagliughi@mindspring.com>
+ * Copyright (c) 2016-2023 Frank Pagliughi <fpagliughi@mindspring.com>
  *
  * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
+ * are made available under the terms of the Eclipse Public License v2.0
  * and Eclipse Distribution License v1.0 which accompany this distribution.
  *
  * The Eclipse Public License is available at
- *    http://www.eclipse.org/legal/epl-v10.html
+ *    http://www.eclipse.org/legal/epl-v20.html
  * and the Eclipse Distribution License is available at
  *   http://www.eclipse.org/org/documents/edl-v10.php.
  *
@@ -30,6 +30,7 @@
 #include "mqtt/types.h"
 #include "mqtt/message.h"
 #include "mqtt/topic.h"
+#include "mqtt/platform.h"
 
 namespace mqtt {
 
@@ -49,13 +50,13 @@ class will_options
 {
 public:
 	/** The default QoS for the LWT, if unspecified */
-	static constexpr int DFLT_QOS = 0;
+	PAHO_MQTTPP_EXPORT static const int DFLT_QOS;  // =0;
 	/** The defalut retained flag for LWT, if unspecified */
-	static constexpr bool DFLT_RETAINED = false;
+	PAHO_MQTTPP_EXPORT static const bool DFLT_RETAINED;  // =false;
 
 private:
 	/** A default C struct to support re-initializing variables */
-	static const MQTTAsync_willOptions DFLT_C_STRUCT;
+	PAHO_MQTTPP_EXPORT static const MQTTAsync_willOptions DFLT_C_STRUCT;
 
 	/** The underlying C LWT options */
 	MQTTAsync_willOptions opts_;
