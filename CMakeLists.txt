@@ -1,17 +1,15 @@
 cmake_minimum_required(VERSION 3.6)
 project(gdpaho)
 
-option(BUILD_FOR_EDITOR "If true, create and install libs as release ready to use in the demo folder" FALSE)
+option(BUILD_GODOT_CPP "If true, compile Godot CPP" OFF)
 
 set(GODOT_GDEXTENSION_DIR godot-cpp/gdextension/ CACHE STRING "Path to GDExtension interface header directory")
 set(CPP_BINDINGS_PATH godot-cpp CACHE STRING "Path to C++ bindings")
 
-if(DEFINED BUILD_FOR_EDITOR)
-	if(${BUILD_FOR_EDITOR})
-		set(CMAKE_BUILD_TYPE Release)
-		message("Build for editor mode ignore CMAKE_BUILD_TYPE, " CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+if(DEFINED BUILD_GODOT_CPP)
+	if(${BUILD_GODOT_CPP})
 		execute_process(
-			COMMAND cmake -DCMAKE_BUILD_TYPE=Release godot-cpp -B godot-cpp
+			COMMAND cmake -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} godot-cpp -B godot-cpp
 			WORKING_DIRECTORY "."
 			COMMAND_ECHO STDOUT
 		)
@@ -199,23 +197,17 @@ else()
 	)
 endif()
 	
-	# Add the compile flags
-	set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY COMPILE_FLAGS ${GODOT_COMPILE_FLAGS})
-	set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${GODOT_LINKER_FLAGS})
-if(CMAKE_BUILD_TYPE MATCHES Debug)
-	set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME "gdpaho.debug")
-else()
-	set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME "gdpaho.release")
-endif()
+# Add the compile flags
+set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY COMPILE_FLAGS ${GODOT_COMPILE_FLAGS})
+set_property(TARGET ${PROJECT_NAME} APPEND_STRING PROPERTY LINK_FLAGS ${GODOT_LINKER_FLAGS})
+set_property(TARGET ${PROJECT_NAME} PROPERTY OUTPUT_NAME gdpaho.${BUILD_TYPE})
 
-if(${BUILD_FOR_EDITOR})
-	if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
-		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy ${BUILD_PATH}/${PROJECT_NAME}.release${LIB_EXT} ${BUILD_PATH}/gdpaho.debug${LIB_EXT}
-		)
-	else()
-		add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-			COMMAND ${CMAKE_COMMAND} -E copy ${BUILD_PATH}/lib${PROJECT_NAME}.release${LIB_EXT} ${BUILD_PATH}/lib${PROJECT_NAME}.debug${LIB_EXT}
-		)
-	endif()
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy ${BUILD_PATH}/${PROJECT_NAME}.release${LIB_EXT} ${BUILD_PATH}/${PROJECT_NAME}.debug${LIB_EXT}
+	)
+else()
+	add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy ${BUILD_PATH}/lib${PROJECT_NAME}.release${LIB_EXT} ${BUILD_PATH}/lib${PROJECT_NAME}.debug${LIB_EXT}
+	)
 endif()

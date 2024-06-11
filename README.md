@@ -28,7 +28,7 @@ The editor uses the debug version, but if you want to export your project as a r
 
 Compile everything in release and copy libs to the demo folder ready to use by Godot4.
 ```cmake
-cmake -DBUILD_FOR_EDITOR=True . -B build
+cmake -DBUILD_GODOT_CPP=True . -B build
 cmake --build build
 ```
 
